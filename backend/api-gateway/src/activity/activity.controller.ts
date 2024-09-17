@@ -1,6 +1,7 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { ApiTags } from '@nestjs/swagger';
+import { ActivityDto } from './activity.dto';
 
 @ApiTags('Activities')
 @Controller('activities')
@@ -11,8 +12,5 @@ export class ActivityController {
   createActivity(@Body() data: ActivityDto) {
     return this.activityService.createActivity(data);
   }
-  @Get()
-
-  @Get(/:id)
 
 }
