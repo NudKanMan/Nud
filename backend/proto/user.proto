@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse) {}
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {}
+  rpc DeleteProfile(DeleteProfileRequest) returns (DeleteProfileResponse) {}
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+}
+
+message RegisterResponse {
+  string token = 1;
+}
+
+message GetProfileRequest {
+  string token = 1;
+}
+
+message GetProfileResponse {
+  string email = 1;
+  string name = 2;
+}
+
+message UpdateProfileRequest {
+  string token = 1;
+  string email = 2;
+  string name = 3;
+}
+
+message UpdateProfileResponse {
+  string email = 1;
+  string name = 2;
+}
+
+message DeleteProfileRequest {
+  string token = 1;
+}
+
+message DeleteProfileResponse {
+  string message = 1;
+}
+

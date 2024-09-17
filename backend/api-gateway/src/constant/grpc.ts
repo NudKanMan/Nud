@@ -1,0 +1,3 @@
+export enum GRPC_PACKAGE {
+  USER_PACKAGE = 'USER_PACKAGE',
+}
