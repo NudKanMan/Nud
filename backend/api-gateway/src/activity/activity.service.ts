@@ -3,7 +3,11 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
 interface ActivityGrpcService {
-  findAll(data: any): Observable<any>;
+  CreateActivity(data: any): Observable<any>;
+  UpdateActivity(data: any): Observable<any>;
+  DeleteActivity(data: any): Observable<any>;
+  GetActivity(data: any): Observable<any>;
+  ListActivities(data: any): Observable<any>;
 }
 
 @Injectable()
@@ -21,8 +25,23 @@ export class ActivityService {
         'ActivityService',
       );
   }
+  getActivity(data: any): Observable<any> {
+    return this.activityService.GetActivity(data);
+  }
 
-  findAll(data: any): Observable<any> {
-    return this.activityService.findAll(data);
+  listActivities(data: any): Observable<any> {
+    return this.activityService.ListActivities(data);
+  }
+
+  createActivity(data: any): Observable<any> {
+    return this.activityService.CreateActivity(data);
+  }
+
+  updateActivity(data: any): Observable<any> {
+    return this.activityService.UpdateActivity(data);
+  }
+
+  deleteActivity(data: any): Observable<any> {
+    return this.activityService.DeleteActivity(data);
   }
 }

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@nestjs/config": "^3.2.3",
+    "@nestjs/microservices": "^10.4.3",
+    "@nestjs/swagger": "^7.4.2",
+    "class-validator": "^0.14.1",
+    "path": "^0.12.7"
+  }
+}
