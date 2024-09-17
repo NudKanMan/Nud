@@ -1,29 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Activity } from './entities/Activity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService} from '@nestjs/config'
-import { ActivityModule } from './activities/activities.module';
+import { Activity } from './entities/Activity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get('MYSQL_DB_HOST'),
-        port: +configService.get('MYSQL_TCP_PORT'),
-        database: configService.get('MYSQL_DATABASE'),
-        username: configService.get('MYSQL_USER'),
-        password: configService.get('MYSQL_PASSWORD'),
+        url: configService.get('DATABASE_URL'),
+        synchronize: true,
         entities: [Activity],
-        synchronize: true
       }),
       inject: [ConfigService],
     }),
-    ActivityModule
+    TypeOrmModule.forFeature([Activity]),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,25 +1,25 @@
-import { Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'activities' })
 export class Activity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    title: string;
+  @Column()
+  title: string;
 
-    @Column({ nullable: true })
-    description: string;
+  @Column({ nullable: true })
+  description: string;
 
-    @Column()
-    ownerId: number;
+  @Column()
+  ownerId: string;
 
-    @Column({ nullable: true })
-    start_date: Date;
+  @Column({ nullable: true })
+  start_date: Date;
 
-    @Column({ nullable: true })
-    end_date: Date;
+  @Column({ nullable: true })
+  end_date: Date;
 
-    // @Column('json')
-    // participantIds: number[] = [];
+  // @Column('json')
+  // participantIds: number[] = [];
 }

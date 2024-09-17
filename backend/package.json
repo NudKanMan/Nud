@@ -5,10 +5,12 @@
   "scripts": {
     "install_api_gateway": "cd api-gateway && yarn",
     "install_user_service": "cd user-service && yarn",
-    "install:all": "concurrently \"yarn install_api_gateway\" \"yarn install_user_service\"",
+    "install_activity_service": "cd activity-service && yarn",
+    "install:all": "concurrently \"yarn install_api_gateway\" \"yarn install_user_service\" \"yarn install_activity_service\"",
     "dev_api_gateway": "cd api-gateway && yarn dev",
     "dev_user_service": "cd user-service && yarn dev",
-    "dev": "concurrently \"yarn dev_api_gateway\" \"yarn dev_user_service\"",
+    "dev_activity_service": "cd activity-service && yarn dev",
+    "dev": "concurrently \"yarn dev_api_gateway\" \"yarn dev_user_service\" \"yarn dev_activity_service\"",
     "docker_user_service": "cd user-service && docker-compose up -d",
     "docker": "concurrently \"yarn docker_user_service\""
   },
