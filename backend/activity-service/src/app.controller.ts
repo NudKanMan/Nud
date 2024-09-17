@@ -14,6 +14,7 @@ export class AppController {
 
   @GrpcMethod('ActivityService', 'CreateActivity')
   async createActivity(data: CreateActivityRequestDto) {
+    console.log('createActivity', data);
     return this.activityService.createActivity(data);
   }
 

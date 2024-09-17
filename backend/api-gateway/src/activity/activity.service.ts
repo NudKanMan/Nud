@@ -26,14 +26,16 @@ export class ActivityService {
       );
   }
   getActivity(data: any): Observable<any> {
+    console.log('get by id', data);
     return this.activityService.GetActivity(data);
   }
 
-  listActivities(data: any): Observable<any> {
-    return this.activityService.ListActivities(data);
+  listActivities(): Observable<any> {
+    return this.activityService.ListActivities({});
   }
 
   createActivity(data: any): Observable<any> {
+    console.log('data2', data);
     return this.activityService.CreateActivity(data);
   }
 

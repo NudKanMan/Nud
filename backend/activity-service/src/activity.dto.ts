@@ -1,19 +1,17 @@
-// DTO for creating an activity
 export class CreateActivityRequestDto {
   title: string;
   description: string;
-  start_date: string; // ISO formatted date string
-  end_date: string; // ISO formatted date string
-  owner_id: string; // UUID as string
+  startDate: string;
+  endDate: string;
+  ownerId: string;
 }
 
-// DTO for updating an activity
 export class UpdateActivityRequestDto {
   id: string; // UUID as string
   title: string;
   description: string;
-  start_date: string; // ISO formatted date string
-  end_date: string; // ISO formatted date string
+  startDate: string; // ISO formatted date string
+  endDate: string; // ISO formatted date string
   user_id: string; // UUID as string
 }
 
@@ -32,9 +30,9 @@ export class ActivityResponseDto {
   id: string; // UUID as string
   title: string;
   description: string;
-  start_date: string; // ISO formatted date string
-  end_date: string; // ISO formatted date string
-  owner_id: string; // UUID as string
+  startDate: string; // ISO formatted date string
+  endDate: string; // ISO formatted date string
+  ownerId: string; // UUID as string
 }
 
 export class ListActivitiesResponseDto {

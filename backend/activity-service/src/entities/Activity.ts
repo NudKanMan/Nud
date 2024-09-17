@@ -15,11 +15,8 @@ export class Activity {
   ownerId: string;
 
   @Column({ nullable: true })
-  start_date: Date;
+  startDate: Date;
 
   @Column({ nullable: true })
-  end_date: Date;
-
-  // @Column('json')
-  // participantIds: number[] = [];
+  endDate: Date;
 }
