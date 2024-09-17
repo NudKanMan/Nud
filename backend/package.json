@@ -2,6 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "install_api_gateway": "cd api-gateway && yarn",
     "install_user_service": "cd user-service && yarn",
