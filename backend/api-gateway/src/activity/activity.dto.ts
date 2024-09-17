@@ -10,6 +10,7 @@ export class ActivityDto {
   @ApiProperty({
     description: 'The email of the user',
   })
+
   @IsDate()
   start_date: string;
 
@@ -23,9 +24,4 @@ export class ActivityDto {
   @IsString()
   @IsNotEmpty()
   owner_id: string;
-
-  @ApiProperty({ description: 'The password for the user account' })
-  @IsString()
-  @IsNotEmpty()
-  password: string;
 }
