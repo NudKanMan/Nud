@@ -26,7 +26,7 @@ export class ActivitiesService {
     async createActivity(
         createActivityDto: CreateActivityDto,
         userId: number,
-    ): Promise<Activity> {
+        ): Promise<Activity> {
         const activity = this.activitiesRepository.create({
             ...createActivityDto,
             start_date: new Date(createActivityDto.start_date),
