@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package review;
+
+service ReviewService {
+    rpc TestReviewService(Empty) returns(OkRes);
+    rpc AddReview(AddReviewReq) returns (AddReviewRes);
+}
+
+message AddReviewReq{
+
+}
+
+message AddReviewRes{
+    
+}
+
+message Empty{
+
+}
+
+message OkRes {
+    string message = 1;
+}
