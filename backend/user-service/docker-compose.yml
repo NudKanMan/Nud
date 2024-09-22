@@ -1,22 +1,21 @@
-version: '3.8'
-
 services:
   mysql:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user
     ports:
       - "3306:3306"
-    volumes:
-      - nud_user_service:/var/lib/mysql
-    networks:
-      - app-network
+#     volumes:
+#       - nud_user_service:/var/lib/mysql
+#     networks:
+#       - app-network
 
-volumes:
-  nud_user_service:
-    driver: local
+# volumes:
+#   nud_user_service:
+#     driver: local
 
-networks:
-  app-network:
-    driver: bridge
+# networks:
+#   app-network:
+#     driver: bridge
