@@ -16,5 +16,5 @@ services:
       - "3307:3307"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: activity
+      MYSQL_DATABASE: nud-activity-service
       MYSQL_TCP_PORT: 3307
