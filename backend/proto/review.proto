@@ -4,6 +4,8 @@ package review;
 
 service ReviewService{
     rpc GetHello(Empty) returns (HelloRes);
+    rpc Create(CreateReq) returns (CreateRes);
+    rpc FindAll(Empty) returns (FindAllRes);
 }
 
 message Empty{
@@ -11,5 +13,19 @@ message Empty{
 }
 
 message HelloRes{
+    string message = 1;
+}
+
+message FindAllRes{
+    string message = 1;
+    repeated string reviews = 2;
+}
+
+message CreateReq{
+    string title = 1;
+    string description = 2;
+}
+
+message CreateRes{
     string message = 1;
 }

@@ -10,4 +10,22 @@ export class AppController {
   getHello() {
     return { message: this.appService.getHello() };
   }
+
+  @GrpcMethod('ReviewService', 'Create')
+  async create(data: { title: string; description: string }) {
+    try {
+      await this.appService.create(data);
+      return { message: 'created!' };
+    } catch (e) {
+      console.log(e);
+      throw new Error(e);
+    }
+  }
+
+  @GrpcMethod('ReviewService', 'FindAll')
+  async findAll() {
+    const ans = await this.appService.findAll();
+    console.log(ans);
+    return { message: 'founded!', reviews: ans };
+  }
 }
