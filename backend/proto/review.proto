@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package review;
+
+service ReviewService{
+    rpc GetHello(Empty) returns (HelloRes);
+}
+
+message Empty{
+
+}
+
+message HelloRes{
+    string message = 1;
+}
