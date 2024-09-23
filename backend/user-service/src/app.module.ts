@@ -13,7 +13,13 @@ import { JwtModule } from '@nestjs/jwt';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        url: configService.get('DATABASE_URL'),
+        url:
+          'mysql://root:' +
+          configService.get('MYSQL_ROOT_PASSWORD') +
+          '@localhost:' +
+          configService.get('DATABASE_PORT') +
+          '/' +
+          configService.get('MYSQL_DATABASE'),
         synchronize: true,
         entities: [User],
       }),
