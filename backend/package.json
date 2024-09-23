@@ -12,8 +12,9 @@
     "dev_user_service": "cd user-service && yarn dev",
     "dev_activity_service": "cd activity-service && yarn dev",
     "dev": "concurrently \"yarn dev_api_gateway\" \"yarn dev_user_service\" \"yarn dev_activity_service\"",
-    "docker_user_service": "cd user-service && docker-compose up -d",
-    "docker": "concurrently \"yarn docker_user_service\""
+    "docker_user_service": "cd user-service && docker compose up -d",
+    "docker_activity_service": "cd activity-service && docker compose up -d",
+    "docker": "concurrently \"yarn docker_user_service\" \"yarn docker_activity_service\""
   },
   "dependencies": {},
   "devDependencies": {
