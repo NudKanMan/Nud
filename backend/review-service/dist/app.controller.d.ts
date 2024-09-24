@@ -5,4 +5,16 @@ export declare class AppController {
     getHello(): {
         message: string;
     };
+    create(data: {
+        title: string;
+        description: string;
+    }): Promise<{
+        message: string;
+    }>;
+    findAll(): Promise<{
+        message: string;
+        reviews: (import("mongoose").Document<unknown, {}, import("./schemas/review").Review> & import("./schemas/review").Review & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+    }>;
 }
