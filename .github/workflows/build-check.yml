@@ -27,7 +27,7 @@ jobs:
       - name: Install Dependencies
         run: |
           cd backend
-          yarn
+          npm install
           yarn install:all
 
       - name: Build Module activity-service
