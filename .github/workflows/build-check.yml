@@ -28,25 +28,27 @@ jobs:
         run: |
           cd backend
           yarn
-          cd activity-service
+
+      - name: Build Module activity-service
+        run: |
+          cd backend/activity-service
           yarn
+          yarn build
 
-      # - name: Build Module activity-service
-      #   run: |
-      #     cd backend/activity-service
-      #     yarn build
+      - name: Build Module user-service
+        run: |
+          cd backend/user-service
+          yarn
+          yarn build
 
-      # - name: Build Module user-service
-      #   run: |
-      #     cd backend/user-service
-      #     yarn build
+      - name: Build Module review-service
+        run: |
+          cd backend/review-service
+          yarn
+          yarn build
 
-      # - name: Build Module review-service
-      #   run: |
-      #     cd backend/review-service
-      #     yarn build
-
-      # - name: Build Module api-gateway
-      #   run: |
-      #     cd backend/api-gateway
-      #     yarn build
+      - name: Build Module api-gateway
+        run: |
+          cd backend/api-gateway
+          yarn
+          yarn build
