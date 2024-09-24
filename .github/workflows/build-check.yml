@@ -27,25 +27,26 @@ jobs:
       - name: Install Dependencies
         run: |
           cd backend
-          npm install
-          yarn install:all
+          yarn
+          cd activity-service
+          yarn
 
-      - name: Build Module activity-service
-        run: |
-          cd backend/activity-service
-          yarn build
+      # - name: Build Module activity-service
+      #   run: |
+      #     cd backend/activity-service
+      #     yarn build
 
-      - name: Build Module user-service
-        run: |
-          cd backend/user-service
-          yarn build
+      # - name: Build Module user-service
+      #   run: |
+      #     cd backend/user-service
+      #     yarn build
 
-      - name: Build Module review-service
-        run: |
-          cd backend/review-service
-          yarn build
+      # - name: Build Module review-service
+      #   run: |
+      #     cd backend/review-service
+      #     yarn build
 
-      - name: Build Module api-gateway
-        run: |
-          cd backend/api-gateway
-          yarn build
+      # - name: Build Module api-gateway
+      #   run: |
+      #     cd backend/api-gateway
+      #     yarn build
