@@ -25,7 +25,6 @@ export class AppController {
   @GrpcMethod('ReviewService', 'FindAll')
   async findAll() {
     const ans = await this.appService.findAll();
-    console.log(ans);
     return { message: 'founded!', reviews: ans };
   }
 }

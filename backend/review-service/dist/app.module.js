@@ -20,11 +20,15 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
-            mongoose_1.MongooseModule.forRoot('mongodb://localhost:27017', {
-                user: 'root',
-                pass: 'root',
-                dbName: 'nud-review-service',
-                autoIndex: true,
+            mongoose_1.MongooseModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => ({
+                    uri: configService.get('MONGO_URL'),
+                    user: configService.get('MONGO_INITDB_ROOT_USERNAME'),
+                    pass: configService.get('MONGO_INITDB_ROOT_PASSWORD'),
+                    dbName: configService.get('MONGO_INITDB_DATABASE'),
+                }),
+                inject: [config_1.ConfigService],
             }),
             mongoose_1.MongooseModule.forFeature([{ name: review_1.Review.name, schema: review_1.ReviewSchema }]),
         ],
