@@ -24,13 +24,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install concurrently
-        run: |
-          yarn add concurrently --dev
-
       - name: Install Dependencies
         run: |
           cd backend
+          yarn
           yarn install:all
 
       - name: Build Module activity-service
