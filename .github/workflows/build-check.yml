@@ -1,0 +1,50 @@
+name: Build Check for All Backend Modules
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: |
+          cd backend
+          yarn install:all
+
+      - name: Build Module activity-service
+        run: |
+          cd backend/activity-service
+          yarn build
+
+      - name: Build Module user-service
+        run: |
+          cd backend/user-service
+          yarn build
+
+      - name: Build Module review-service
+        run: |
+          cd backend/review-service
+          yarn build
+
+      - name: Build Module api-gateway
+        run: |
+          cd backend/api-gateway
+          yarn build
