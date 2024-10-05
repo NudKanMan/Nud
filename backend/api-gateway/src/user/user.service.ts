@@ -8,6 +8,7 @@ import {
   LoginRequestDto,
   RegisterUserDto,
   UpdateProfileDTO,
+  UpdateProfileRequestDTO,
 } from './user.dto';
 
 interface UserGrpcService {
@@ -44,7 +45,7 @@ export class UserService {
     return this.activityService.GetProfile(data);
   }
 
-  updateProfile(data: UpdateProfileDTO) {
+  updateProfile(data: UpdateProfileRequestDTO) {
     return this.activityService.UpdateProfile(data);
   }
 

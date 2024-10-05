@@ -16,6 +16,7 @@ import {
   LoginRequestDto,
   RegisterUserDto,
   UpdateProfileDTO,
+  UpdateProfileRequestDTO,
 } from './user.dto';
 
 @ApiTags('Users')
@@ -39,12 +40,21 @@ export class UserController {
   }
 
   @Patch()
-  updateProfile(@Body() data: UpdateProfileDTO) {
-    return this.userService.updateProfile(data);
+  updateProfile(
+    @Body() data: UpdateProfileDTO,
+    @Headers('authorization') authHeader: string,
+  ) {
+    const token = authHeader.split(' ')[1];
+    return this.userService.updateProfile({
+      email: data.email,
+      name: data.name,
+      token: token,
+    });
   }
 
   @Delete()
-  deleteProfile(@Body() data: DeleteProfileRequestDto) {
-    return this.userService.deleteProfile(data);
+  deleteProfile(@Headers('authorization') authHeader: string) {
+    const token = authHeader.split(' ')[1];
+    return this.userService.deleteProfile({ token });
   }
 }

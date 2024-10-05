@@ -33,7 +33,7 @@ export class LoginRequestDto {
   password: string;
 }
 
-export class UpdateProfileDTO {
+export class UpdateProfileRequestDTO {
   @ApiProperty({ description: "Requested user's token" })
   @IsString()
   @IsNotEmpty()
@@ -49,6 +49,7 @@ export class UpdateProfileDTO {
   @IsNotEmpty()
   name: string;
 }
+
 export class GetProfileRequestDto {
   @ApiProperty({ description: "Requested user's token" })
   @IsString()
@@ -57,8 +58,10 @@ export class GetProfileRequestDto {
 }
 
 export class DeleteProfileRequestDto {
-  @ApiProperty({ description: "Requested user's token" })
-  @IsString()
-  @IsNotEmpty()
   token: string;
+}
+
+export class UpdateProfileDTO {
+  email: string;
+  name: string;
 }
