@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -21,29 +21,37 @@ export class AppService {
       name,
     });
     await this.userRepository.save(user);
-    const token = this.jwtService.sign({ email: user.email });
+    const token = this.jwtService.sign({ email: user.email, id: user.id });
     return { token };
   }
 
   async login(email: string, password: string) {
-    const user = await this.userRepository.findOne({ where: { email } });
-    if (!user || !(await compare(password, user.password))) {
-      throw new Error('Invalid credentials');
+    try {
+      const user = await this.userRepository.findOne({ where: { email } });
+      if (!user || !(await compare(password, user.password))) {
+        throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      }
+      const token = this.jwtService.sign({ email: user.email, id: user.id });
+      return { token };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Login failed', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    const token = this.jwtService.sign({ email: user.email });
-    return { token };
   }
 
-  async getProfile(token: string) {
-    const decoded = this.jwtService.verify(token);
+  async getProfile(id: string) {
+    //const decoded = this.jwtService.verify(token);
     const user = await this.userRepository.findOne({
-      where: { email: decoded.email },
+      where: { id },
     });
     return { email: user.email, name: user.name };
   }
 
   async updateProfile(token: string, email: string, name: string) {
     const decoded = this.jwtService.verify(token);
+    console.log(decoded.email);
     const user = await this.userRepository.findOne({
       where: { email: decoded.email },
     });
@@ -51,7 +59,10 @@ export class AppService {
       user.email = email;
       user.name = name;
       await this.userRepository.save(user);
-      return { email: user.email, name: user.name };
+      const token = this.jwtService.sign({ email: user.email, id: user.id });
+      const res = { token: token, email: user.email, name: user.name };
+      console.log(res);
+      return res;
     }
     throw new Error('User not found');
   }
