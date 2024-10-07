@@ -30,7 +30,7 @@ message RegisterResponse {
 }
 
 message GetProfileRequest {
-  string token = 1;
+  string id = 1;
 }
 
 message GetProfileResponse {
@@ -45,8 +45,9 @@ message UpdateProfileRequest {
 }
 
 message UpdateProfileResponse {
-  string email = 1;
-  string name = 2;
+  string token = 1;
+  string email = 2;
+  string name = 3;
 }
 
 message DeleteProfileRequest {

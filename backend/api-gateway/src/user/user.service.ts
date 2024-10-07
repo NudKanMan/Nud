@@ -2,6 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { GRPC_PACKAGE } from 'src/constant/grpc';
+import {
+  DeleteProfileRequestDto,
+  GetProfileRequestDto,
+  LoginRequestDto,
+  RegisterUserDto,
+  UpdateProfileDTO,
+  UpdateProfileRequestDTO,
+} from './user.dto';
 
 interface UserGrpcService {
   Login(data: any): Observable<any>;
@@ -25,7 +33,23 @@ export class UserService {
       this.userGrpcService.getService<UserGrpcService>('UserService');
   }
 
-  register(data: any) {
+  register(data: RegisterUserDto) {
     return this.activityService.Register(data);
+  }
+
+  login(data: LoginRequestDto) {
+    return this.activityService.Login(data);
+  }
+
+  getProfile(data: GetProfileRequestDto) {
+    return this.activityService.GetProfile(data);
+  }
+
+  updateProfile(data: UpdateProfileRequestDTO) {
+    return this.activityService.UpdateProfile(data);
+  }
+
+  deleteProfile(data: DeleteProfileRequestDto) {
+    return this.activityService.DeleteProfile(data);
   }
 }

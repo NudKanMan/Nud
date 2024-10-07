@@ -20,3 +20,48 @@ export class RegisterUserDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class LoginRequestDto {
+  @ApiProperty({ description: "Requested user's email" })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({ description: "Requested user's password" })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export class UpdateProfileRequestDTO {
+  @ApiProperty({ description: "Requested user's token" })
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @ApiProperty({ description: "Requested user's email" })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({ description: "Requested user's name" })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+}
+
+export class GetProfileRequestDto {
+  @ApiProperty({ description: "Requested user's token" })
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+}
+
+export class DeleteProfileRequestDto {
+  token: string;
+}
+
+export class UpdateProfileDTO {
+  email: string;
+  name: string;
+}

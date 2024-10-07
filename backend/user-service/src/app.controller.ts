@@ -25,7 +25,7 @@ export class AppController {
 
   @GrpcMethod('UserService', 'GetProfile')
   async getProfile(data: GetProfileRequestDto) {
-    return this.userService.getProfile(data.token);
+    return this.userService.getProfile(data.id);
   }
 
   @GrpcMethod('UserService', 'UpdateProfile')
