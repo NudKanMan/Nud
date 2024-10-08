@@ -1,0 +1,23 @@
+services:
+  user-service:
+    env_file:
+      - ./user-service/.env
+    image: mysql:8.0
+    container_name: mysql_user_service
+    ports:
+      - "3306:3306"
+  review-service:
+    container_name: mongo_review_service
+    env_file:
+      - ./review-service/.env
+    image: mongo:8.0
+    restart: always
+    ports:
+      - "27017:27017"
+  activity-service:
+    image: mysql
+    container_name: mysql_activity_service
+    env_file:
+      - ./activity-service/.env
+    ports:
+      - "3307:3307"
