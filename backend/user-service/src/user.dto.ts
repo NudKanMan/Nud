@@ -16,7 +16,7 @@ export class UpdateProfileRequestDto {
 }
 
 export class GetProfileRequestDto {
-  token: string;
+  id: string;
 }
 
 export class DeleteProfileRequestDto {
