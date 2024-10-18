@@ -4,9 +4,29 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Activity } from './entities/Activity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    ClientsModule.registerAsync([
+      {
+        name: 'ACTIVITY_SERVICE',
+        useFactory: async (configService: ConfigService) => {
+          const url = configService.get<string>('RABBITMQ_URL');
+          return {
+            transport: Transport.RMQ,
+            options: {
+              urls: [url],
+              queue: 'activity_queue', // Name of the queue to bind to
+              queueOptions: {
+                durable: false,
+              },
+            },
+          };
+        },
+        inject: [ConfigService],
+      },
+    ]),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

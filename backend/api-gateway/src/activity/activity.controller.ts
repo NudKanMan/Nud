@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -17,11 +18,21 @@ import {
   GetActivityDto,
   ListActivitiesDto,
 } from './activity.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @ApiTags('Activities')
 @Controller('activities')
 export class ActivityController {
-  constructor(private readonly activityService: ActivityService) {}
+  constructor(
+    @Inject('ACTIVITY_SERVICE') private client: ClientProxy,
+    private readonly activityService: ActivityService,
+  ) {}
+
+  @Post('/testRMQ1')
+  emitMessage1(@Body() obj: any) {
+    console.log('send', obj);
+    return this.client.emit('test1', obj);
+  }
 
   @Post()
   createActivity(@Body() data: CreateActivityDto) {

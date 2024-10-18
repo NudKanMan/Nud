@@ -10,6 +10,23 @@ import { join } from 'path';
   imports: [
     ClientsModule.registerAsync([
       {
+        name: 'ACTIVITY_SERVICE',
+        useFactory: async (configService: ConfigService) => {
+          const url = configService.get<string>('RABBITMQ_URL');
+          return {
+            transport: Transport.RMQ,
+            options: {
+              urls: [url],
+              queue: 'activity_queue', // Name of the queue to bind to
+              queueOptions: {
+                durable: false,
+              },
+            },
+          };
+        },
+        inject: [ConfigService],
+      },
+      {
         name: GRPC_PACKAGE.ACTIVITY_PACKAGE,
         useFactory: async (configService: ConfigService) => {
           const url = configService.get<string>('ACTIVITY_SERVICE_URL');
