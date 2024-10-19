@@ -18,11 +18,11 @@ export class AppController {
     private readonly rmqService: RmqService,
   ) {}
 
-  @GrpcMethod('ActivityService', 'CreateActivity')
-  async createActivity(data: CreateActivityRequestDto) {
-    console.log('createActivity', data);
-    return this.activityService.createActivity(data);
-  }
+  // @GrpcMethod('ActivityService', 'CreateActivity')
+  // async createActivity(data: CreateActivityRequestDto) {
+  //   console.log('createActivity', data);
+  //   return this.activityService.createActivity(data);
+  // }
 
   @GrpcMethod('ActivityService', 'UpdateActivity')
   async updateActivity(data: UpdateActivityRequestDto) {
