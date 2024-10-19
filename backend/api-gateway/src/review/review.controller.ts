@@ -1,22 +1,32 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
+import { JwtUserGuard } from 'src/guard/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateReviewRequestDto } from './review.dto';
 
-@Controller('review')
+@ApiTags('Reviews')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Get()
-  getHello() {
-    return this.reviewService.getHello();
-  }
-
-  @Get('/reviews')
-  findAll() {
-    return this.reviewService.FindAll();
+  @Get('/activity/:id')
+  findAll(@Req() req, @Param('id') id: string) {
+    return this.reviewService.findByActivityId(id);
   }
 
   @Post('/create')
-  create(@Body() obj: { title: string; description: string }) {
-    return this.reviewService.Create(obj);
+  @UseGuards(JwtUserGuard)
+  create(@Body() obj: CreateReviewRequestDto, @Req() req) {
+    if (!req.userId) throw new Error('User not found');
+    obj.userId = req.userId;
+    return this.reviewService.createReview(obj);
   }
 }

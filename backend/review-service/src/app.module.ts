@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Review, ReviewSchema } from './schemas/review';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -19,6 +21,24 @@ import { Review, ReviewSchema } from './schemas/review';
       inject: [ConfigService], // Inject ConfigService
     }),
     MongooseModule.forFeature([{ name: Review.name, schema: ReviewSchema }]),
+    ClientsModule.registerAsync([
+      {
+        name: 'ACTIVITY_PACKAGE',
+        useFactory: async (configService: ConfigService) => {
+          const url = configService.get<string>('ACTIVITY_SERVICE_URL');
+          console.log('url', url);
+          return {
+            transport: Transport.GRPC,
+            options: {
+              package: 'activities',
+              protoPath: join(__dirname, '../../proto/activity.proto'),
+              url,
+            },
+          };
+        },
+        inject: [ConfigService],
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
