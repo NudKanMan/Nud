@@ -6,6 +6,8 @@ import {
   UpdateActivityRequestDto,
   DeleteActivityRequestDto,
   GetActivityRequestDto,
+  JoinActivityRequestDto,
+  LeaveActivityRequestDto,
 } from './activity.dto';
 
 @Controller()
@@ -25,7 +27,7 @@ export class AppController {
 
   @GrpcMethod('ActivityService', 'DeleteActivity')
   async deleteActivity(data: DeleteActivityRequestDto) {
-    return this.activityService.deleteActivity(data.id);
+    return this.activityService.deleteActivity(data);
   }
 
   @GrpcMethod('ActivityService', 'GetActivity')
@@ -36,5 +38,15 @@ export class AppController {
   @GrpcMethod('ActivityService', 'ListActivities')
   async listActivities() {
     return this.activityService.findAllActivities();
+  }
+
+  @GrpcMethod('ActivityService', 'JoinActivity')
+  async joinActivity(data: JoinActivityRequestDto) {
+    return this.activityService.joinActivity(data);
+  }
+
+  @GrpcMethod('ActivityService', 'LeaveActivity')
+  async leaveActivity(data: LeaveActivityRequestDto) {
+    return this.activityService.leaveActivity(data);
   }
 }

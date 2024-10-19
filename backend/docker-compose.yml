@@ -15,7 +15,7 @@ services:
     ports:
       - "27017:27017"
   activity-service:
-    image: mysql
+    image: mysql:8.0
     container_name: mysql_activity_service
     env_file:
       - ./activity-service/.env

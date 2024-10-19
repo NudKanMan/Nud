@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Activity } from './entities/Activity';
+import { Activity } from './entities/activity.entity';
+import { ActivityParticipant } from './entities/activity-participant.entity';
 
 @Module({
   imports: [
@@ -17,11 +18,11 @@ import { Activity } from './entities/Activity';
         port: configService.get('DATABASE_PORT'),
         database: configService.get('MYSQL_DATABASE'),
         synchronize: true,
-        entities: [Activity],
+        entities: [Activity, ActivityParticipant],
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([Activity]),
+    TypeOrmModule.forFeature([Activity, ActivityParticipant]),
   ],
   controllers: [AppController],
   providers: [AppService],

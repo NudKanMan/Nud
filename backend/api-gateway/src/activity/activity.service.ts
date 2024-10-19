@@ -8,6 +8,8 @@ interface ActivityGrpcService {
   DeleteActivity(data: any): Observable<any>;
   GetActivity(data: any): Observable<any>;
   ListActivities(data: any): Observable<any>;
+  JoinActivity(data: any): Observable<any>;
+  LeaveActivity(data: any): Observable<any>;
 }
 
 @Injectable()
@@ -26,7 +28,6 @@ export class ActivityService {
       );
   }
   getActivity(data: any): Observable<any> {
-    console.log('get by id', data);
     return this.activityService.GetActivity(data);
   }
 
@@ -45,5 +46,13 @@ export class ActivityService {
 
   deleteActivity(data: any): Observable<any> {
     return this.activityService.DeleteActivity(data);
+  }
+
+  joinActivity(data: any): Observable<any> {
+    return this.activityService.JoinActivity(data);
+  }
+
+  leaveActivity(data: any): Observable<any> {
+    return this.activityService.LeaveActivity(data);
   }
 }

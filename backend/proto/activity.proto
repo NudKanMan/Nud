@@ -9,53 +9,66 @@ service ActivityService {
   rpc DeleteActivity (DeleteActivityRequest) returns (Empty);
   rpc GetActivity (GetActivityRequest) returns (ActivityResponse);
   rpc ListActivities (ListActivitiesRequest) returns (ListActivitiesResponse);
+  rpc JoinActivity (JoinActivityRequest) returns (ActivityResponse);
+  rpc LeaveActivity (LeaveActivityRequest) returns (ActivityResponse);
 }
 
-// Messages for creating an activity
+message LeaveActivityRequest {
+  string id = 1;
+  string userId = 2;
+}
+
+message JoinActivityRequest {
+  string id = 1;
+  string userId = 2;
+}
+
 message CreateActivityRequest {
   string title = 1;
   string description = 2;
-  string startDate = 3; 
-  string endDate = 4;
-  string ownerId = 5;
+  string ownerId = 3;
+  int32 maxParticipants = 4;
+  string startDate = 5;
+  string endDate = 6;
 }
 
-// Messages for updating an activity
 message UpdateActivityRequest {
   string id = 1;
   string title = 2;
   string description = 3;
   string startDate = 4;
   string endDate = 5;
+  string ownerId = 6;
 }
 
-// Messages for deleting an activity
 message DeleteActivityRequest {
-  string id = 1;  // UUID as string
+  string id = 1; 
+  string ownerId = 2; 
 }
 
-// Messages for getting an activity by ID
 message GetActivityRequest {
-  string id = 1;  // UUID as string
+  string id = 1; 
 }
 
-// Response structure for activity data
 message ActivityResponse {
   string id = 1;
   string title = 2;
   string description = 3;
   string ownerId = 4;
-  string startDate = 5;
-  string endDate = 6;
+  int32 maxParticipants = 5;
+  int32 currentParticipants = 6;
+  int32 status = 7;
+  string startDate = 8;
+  string endDate = 9;
+  string createdAt = 10;
+  string updatedAt = 11;
 }
 
 
-// Request and response for listing all activities
 message ListActivitiesRequest {}
 
 message ListActivitiesResponse {
   repeated ActivityResponse activities = 1;
 }
 
-// Empty response used for deletions
 message Empty {}

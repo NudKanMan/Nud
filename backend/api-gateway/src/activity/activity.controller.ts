@@ -12,10 +12,9 @@ import { ApiTags } from '@nestjs/swagger';
 import {
   CreateActivityDto,
   UpdateActivityDto,
-  ActivityResponseDto,
   DeleteActivityDto,
-  GetActivityDto,
-  ListActivitiesDto,
+  JoinActivityDto,
+  LeaveActivityDto,
 } from './activity.dto';
 
 @ApiTags('Activities')
@@ -29,14 +28,24 @@ export class ActivityController {
     return this.activityService.createActivity(data);
   }
 
-  @Put()
-  updateActivity(@Body() data: UpdateActivityDto) {
-    return this.activityService.updateActivity(data);
-  }
-
   @Get()
   listActivities() {
     return this.activityService.listActivities();
+  }
+
+  @Put('/join')
+  joinActivity(@Body() data: JoinActivityDto) {
+    return this.activityService.joinActivity(data);
+  }
+
+  @Put('/leave')
+  leaveActivity(@Body() data: LeaveActivityDto) {
+    return this.activityService.leaveActivity(data);
+  }
+
+  @Put('/:id')
+  updateActivity(@Body() data: UpdateActivityDto, @Param('id') id: string) {
+    return this.activityService.updateActivity({ id, ...data });
   }
 
   @Get('/:id')

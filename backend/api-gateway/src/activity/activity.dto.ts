@@ -2,14 +2,67 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
-  IsISO8601,
   IsUUID,
-  IsEmail,
+  IsISO8601,
+  IsNumber,
 } from 'class-validator';
 
 // DTO for creating an activity
 export class CreateActivityDto {
-  @ApiProperty({ description: 'The title of the activity' })
+  @ApiProperty({
+    description: 'The title of the activity',
+    default: 'Activity Title',
+  })
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @ApiProperty({
+    description: 'The description of the activity',
+    default: 'Activity Description',
+  })
+  @IsString()
+  description: string;
+
+  @ApiProperty({
+    description: 'The owner ID of the activity',
+    default: '111-222-333',
+  })
+  @IsString()
+  @IsNotEmpty()
+  ownerId: string;
+
+  @ApiProperty({
+    description: 'The maximum number of participants',
+    default: 10,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  maxParticipants: number;
+
+  @ApiProperty({
+    description: 'The start date of the activity in ISO format',
+    default: '2021-01-01',
+  })
+  @IsISO8601()
+  @IsNotEmpty()
+  startDate: string;
+
+  @ApiProperty({
+    description: 'The end date of the activity in ISO format',
+    default: '2021-01-02',
+  })
+  @IsISO8601()
+  @IsNotEmpty()
+  endDate: string;
+}
+
+// DTO for updating an activity
+export class UpdateActivityDto {
+  @ApiProperty({
+    description: 'The title of the activity',
+    default: 'Activity Title',
+  })
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -24,43 +77,47 @@ export class CreateActivityDto {
   @IsNotEmpty()
   startDate: string;
 
-  @ApiProperty({ description: 'The end date of the activity in ISO format' })
+  @ApiProperty({
+    description: 'The end date of the activity in ISO format',
+    default: '2021-01-02',
+  })
   @IsISO8601()
   @IsNotEmpty()
   endDate: string;
 
-  @ApiProperty({ description: 'The owner ID of the activity' })
+  @ApiProperty({
+    description: 'The owner ID of the activity',
+    default: '111-222-333',
+  })
   @IsString()
   @IsNotEmpty()
   ownerId: string;
 }
 
-// DTO for updating an activity
-export class UpdateActivityDto {
+// DTO for joining an activity
+export class JoinActivityDto {
   @ApiProperty({ description: 'The ID of the activity', type: String })
   @IsUUID()
   @IsNotEmpty()
   id: string;
 
-  @ApiProperty({ description: 'The title of the activity' })
+  @ApiProperty({ description: 'The ID of the user', type: String })
   @IsString()
   @IsNotEmpty()
-  title: string;
+  userId: string;
+}
 
-  @ApiProperty({ description: 'The description of the activity' })
+// DTO for leaving an activity
+export class LeaveActivityDto {
+  @ApiProperty({ description: 'The ID of the activity', type: String })
+  @IsUUID()
+  @IsNotEmpty()
+  id: string;
+
+  @ApiProperty({ description: 'The ID of the user', type: String })
   @IsString()
   @IsNotEmpty()
-  description: string;
-
-  @ApiProperty({ description: 'The start date of the activity in ISO format' })
-  @IsISO8601()
-  @IsNotEmpty()
-  startDate: string;
-
-  @ApiProperty({ description: 'The end date of the activity in ISO format' })
-  @IsISO8601()
-  @IsNotEmpty()
-  endDate: string;
+  userId: string;
 }
 
 // DTO for deleting an activity
@@ -69,6 +126,11 @@ export class DeleteActivityDto {
   @IsUUID()
   @IsNotEmpty()
   id: string;
+
+  @ApiProperty({ description: 'The owner ID of the activity' })
+  @IsString()
+  @IsNotEmpty()
+  ownerId: string;
 }
 
 // DTO for getting an activity by ID
@@ -78,27 +140,3 @@ export class GetActivityDto {
   @IsNotEmpty()
   id: string;
 }
-
-// DTO for the activity response
-export class ActivityResponseDto {
-  @ApiProperty({ description: 'The ID of the activity', type: String })
-  id: string;
-
-  @ApiProperty({ description: 'The title of the activity' })
-  title: string;
-
-  @ApiProperty({ description: 'The description of the activity' })
-  description: string;
-
-  @ApiProperty({ description: 'The start date of the activity in ISO format' })
-  startDate: string;
-
-  @ApiProperty({ description: 'The end date of the activity in ISO format' })
-  endDate: string;
-
-  @ApiProperty({ description: 'The owner ID of the activity' })
-  ownerId: string;
-}
-
-// DTO for listing all activities request
-export class ListActivitiesDto {}
