@@ -15,7 +15,7 @@ export class Activity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   title: string;
 
   @Column({ nullable: true })

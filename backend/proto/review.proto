@@ -3,29 +3,30 @@ syntax = "proto3";
 package review;
 
 service ReviewService{
-    rpc GetHello(Empty) returns (HelloRes);
-    rpc Create(CreateReq) returns (CreateRes);
-    rpc FindAll(Empty) returns (FindAllRes);
+    rpc CreateReview(CreateReviewRequest) returns (ReviewResponse);
+    rpc FindByActivityId(FindByActivityIdRequest) returns (FindAllResponse);
 }
 
-message Empty{
-
+message CreateReviewRequest{
+    string activityId = 1;
+    string userId = 2;
+    int32 rating = 3;
+    string comment = 4;
 }
 
-message HelloRes{
-    string message = 1;
+message ReviewResponse{
+    string id = 1;
+    string activityId = 2;
+    string userId = 3;
+    int32 rating = 4;
+    string comment = 5;
+    string createdAt = 6;
 }
 
-message FindAllRes{
-    string message = 1;
-    repeated string reviews = 2;
+message FindByActivityIdRequest{
+    string activityId = 1;
 }
 
-message CreateReq{
-    string title = 1;
-    string description = 2;
-}
-
-message CreateRes{
-    string message = 1;
+message FindAllResponse{
+    repeated ReviewResponse reviews = 1;
 }

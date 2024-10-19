@@ -9,25 +9,34 @@ export class RegisterUserDto {
 
   @ApiProperty({
     description: 'The email of the user',
-    example: 'user@example.com',
+    default: 'user@example.com',
   })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ description: 'The password for the user account' })
+  @ApiProperty({
+    description: 'The password for the user account',
+    default: 'password',
+  })
   @IsString()
   @IsNotEmpty()
   password: string;
 }
 
 export class LoginRequestDto {
-  @ApiProperty({ description: "Requested user's email" })
+  @ApiProperty({
+    description: "Requested user's email",
+    default: 'user@example.com',
+  })
   @IsString()
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ description: "Requested user's password" })
+  @ApiProperty({
+    description: "Requested user's password",
+    default: 'password',
+  })
   @IsString()
   @IsNotEmpty()
   password: string;
