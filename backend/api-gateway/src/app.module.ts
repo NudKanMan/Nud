@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { ActivityModule } from './activity/activity.module';
 import { ReviewModule } from './review/review.module';
+import { RmqModule } from './rabbitmq/rmq.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ReviewModule } from './review/review.module';
     UserModule,
     ActivityModule,
     ReviewModule,
+    RmqModule,
   ],
   controllers: [AppController],
   providers: [AppService],
