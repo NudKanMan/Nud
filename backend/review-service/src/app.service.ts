@@ -27,7 +27,9 @@ export class AppService {
     @InjectModel(Review.name) private readonly reviewModel: Model<Review>,
     @Inject('ACTIVITY_PACKAGE')
     private readonly activityGrpcService: ClientGrpc,
-  ) {
+  ) {}
+
+  onModuleInit() {
     this.activityService =
       this.activityGrpcService.getService<ActivityGrpcService>(
         'ActivityService',
