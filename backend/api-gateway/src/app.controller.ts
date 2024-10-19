@@ -7,7 +7,9 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly rmqService: RmqService,
-  ) {}
+  ) {
+    //this.rmqService.consumeMessages();
+  }
 
   @Get()
   getHello(): string {
@@ -16,6 +18,6 @@ export class AppController {
 
   @Post()
   send(@Body() obj: any) {
-    this.rmqService.sendMessage('fmdskvmsl');
+    this.rmqService.sendMessage(obj, 'activity_exchange', 'create.activity');
   }
 }

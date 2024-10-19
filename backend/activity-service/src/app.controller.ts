@@ -9,10 +9,14 @@ import {
   JoinActivityRequestDto,
   LeaveActivityRequestDto,
 } from './activity.dto';
+import { RmqService } from './rabbitmq/rmq.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly activityService: AppService) {}
+  constructor(
+    private readonly activityService: AppService,
+    private readonly rmqService: RmqService,
+  ) {}
 
   @GrpcMethod('ActivityService', 'CreateActivity')
   async createActivity(data: CreateActivityRequestDto) {

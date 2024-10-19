@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GRPC_PACKAGE } from 'src/constant/grpc';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
+import { RmqModule } from 'src/rabbitmq/rmq.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { join } from 'path';
         inject: [ConfigService],
       },
     ]),
+    RmqModule,
   ],
   controllers: [ActivityController],
   providers: [ActivityService],

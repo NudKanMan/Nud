@@ -16,16 +16,21 @@ import {
   JoinActivityDto,
   LeaveActivityDto,
 } from './activity.dto';
+import { RmqService } from 'src/rabbitmq/rmq.service';
 
 @ApiTags('Activities')
 @Controller('activities')
 export class ActivityController {
-  constructor(private readonly activityService: ActivityService) {}
+  constructor(
+    private readonly activityService: ActivityService,
+    private readonly rmqService: RmqService,
+  ) {}
 
   @Post()
   createActivity(@Body() data: CreateActivityDto) {
     console.log('data', data);
-    return this.activityService.createActivity(data);
+    this.rmqService.sendMessage(data, 'activity_exchange', 'create.activity');
+    //return this.activityService.createActivity(data);
   }
 
   @Get()
