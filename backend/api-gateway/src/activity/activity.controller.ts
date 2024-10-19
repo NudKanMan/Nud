@@ -35,7 +35,6 @@ export class ActivityController {
     if (!req.userId) throw new Error('User not found');
     data.ownerId = req.userId;
     this.rmqService.sendMessage(data, 'activity_exchange', 'create.activity');
-    //return this.activityService.createActivity(data);
   }
 
   @Get()
@@ -46,14 +45,6 @@ export class ActivityController {
   @Get('/:id')
   getActivity(@Param('id') id: string) {
     return this.activityService.getActivity({ id });
-  }
-
-  @Post()
-  @UseGuards(JwtUserGuard)
-  createActivity2(@Body() data: CreateActivityDto, @Req() req) {
-    if (!req.userId) throw new Error('User not found');
-    data.ownerId = req.userId;
-    return this.activityService.createActivity(data);
   }
 
   @Put('/join')
