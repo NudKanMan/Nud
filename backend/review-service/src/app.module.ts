@@ -9,7 +9,7 @@ import { Review, ReviewSchema } from './schemas/review';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule], // Import ConfigModule for async configuration
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URL'),
         user: configService.get<string>('MONGO_INITDB_ROOT_USERNAME'),
