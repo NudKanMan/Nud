@@ -18,12 +18,25 @@ import {
   JoinActivityDto,
   LeaveActivityDto,
 } from './activity.dto';
+import { RmqService } from 'src/rabbitmq/rmq.service';
 import { JwtUserGuard } from 'src/guard/auth.guard';
 
 @ApiTags('Activities')
 @Controller('activities')
 export class ActivityController {
-  constructor(private readonly activityService: ActivityService) {}
+  constructor(
+    private readonly activityService: ActivityService,
+    private readonly rmqService: RmqService,
+  ) {}
+
+  @Post()
+  @UseGuards(JwtUserGuard)
+  createActivity(@Body() data: CreateActivityDto, @Req() req) {
+    if (!req.userId) throw new Error('User not found');
+    data.ownerId = req.userId;
+    this.rmqService.sendMessage(data, 'activity_exchange', 'create.activity');
+    return true;
+  }
 
   @Get()
   listActivities() {
@@ -33,14 +46,6 @@ export class ActivityController {
   @Get('/:id')
   getActivity(@Param('id') id: string) {
     return this.activityService.getActivity({ id });
-  }
-
-  @Post()
-  @UseGuards(JwtUserGuard)
-  createActivity(@Body() data: CreateActivityDto, @Req() req) {
-    if (!req.userId) throw new Error('User not found');
-    data.ownerId = req.userId;
-    return this.activityService.createActivity(data);
   }
 
   @Put('/join')

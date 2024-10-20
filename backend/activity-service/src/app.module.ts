@@ -5,9 +5,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Activity } from './entities/activity.entity';
 import { ActivityParticipant } from './entities/activity-participant.entity';
+import { RmqModule } from './rabbitmq/rmq.module';
 
 @Module({
   imports: [
+    RmqModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
