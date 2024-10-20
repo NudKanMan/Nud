@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package friendmatching;
+
+service FriendMatchingService {
+  rpc RequestFriend(RequestFriendRequest) returns (RequestFriendResponse) {}
+  rpc AcceptFriend(AcceptFriendRequest) returns (AcceptFriendResponse) {}
+  rpc GetFriendList(GetFriendListRequest) returns (GetFriendListResponse) {}
+  rpc GetFriendRequestList(GetFriendRequestListRequest) returns (GetFriendRequestListResponse) {}
+}
+
+message RequestFriendRequest {
+  string userId = 1;
+  string friendId = 2;
+}
+
+message RequestFriendResponse {
+  bool success = 1;
+}
+
+message AcceptFriendRequest {
+  string userId = 1;
+  string friendId = 2;
+}
+
+message AcceptFriendResponse {
+  bool success = 1;
+}
+
+message GetFriendListRequest {
+  string userId = 1;
+}
+
+
+message FriendInfo {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string createdAt = 4;
+}
+
+message GetFriendListResponse {
+  repeated FriendInfo friends = 1;
+}
+
+message GetFriendRequestListRequest {
+  string userId = 1;
+}
+
+message GetFriendRequestListResponse {
+  repeated FriendInfo friendRequests = 1;
+}
+
