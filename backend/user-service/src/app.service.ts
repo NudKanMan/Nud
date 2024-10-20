@@ -24,11 +24,15 @@ export class AppService {
     });
     await this.userRepository.save(user);
     this.rmqService.sendMessage(
-      { email: user.email, name: user.name },
+      { email: user.email, name: user.name, id: user.id },
       'user_exchange',
       'create.user',
     );
-    const token = this.jwtService.sign({ email: user.email, id: user.id });
+    const token = this.jwtService.sign({
+      email: user.email,
+      id: user.id,
+      name: user.name,
+    });
     return { token };
   }
 
@@ -38,7 +42,11 @@ export class AppService {
       if (!user || !(await compare(password, user.password))) {
         throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
       }
-      const token = this.jwtService.sign({ email: user.email, id: user.id });
+      const token = this.jwtService.sign({
+        email: user.email,
+        id: user.id,
+        name: user.name,
+      });
       return { token };
     } catch (error) {
       if (error instanceof HttpException) {
@@ -66,7 +74,11 @@ export class AppService {
       user.email = email;
       user.name = name;
       await this.userRepository.save(user);
-      const token = this.jwtService.sign({ email: user.email, id: user.id });
+      const token = this.jwtService.sign({
+        email: user.email,
+        id: user.id,
+        name: user.name,
+      });
       const res = { token: token, email: user.email, name: user.name };
       console.log(res);
       return res;

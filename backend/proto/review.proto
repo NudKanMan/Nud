@@ -21,6 +21,8 @@ message ReviewResponse{
     int32 rating = 4;
     string comment = 5;
     string createdAt = 6;
+    string name = 7;
+    string email = 8;
 }
 
 message FindByActivityIdRequest{

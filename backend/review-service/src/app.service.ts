@@ -8,6 +8,7 @@ import {
 } from './review.dto';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable, lastValueFrom } from 'rxjs';
+import { User } from './schemas/user';
 
 interface ActivityGrpcService {
   CreateActivity(data: any): Observable<any>;
@@ -25,6 +26,7 @@ export class AppService {
 
   constructor(
     @InjectModel(Review.name) private readonly reviewModel: Model<Review>,
+    @InjectModel(User.name) private readonly userModel: Model<User>,
     @Inject('ACTIVITY_PACKAGE')
     private readonly activityGrpcService: ClientGrpc,
   ) {}
@@ -36,7 +38,7 @@ export class AppService {
       );
   }
 
-  async createReview(obj: CreateReviewRequestDto): Promise<Review> {
+  async createReview(obj: CreateReviewRequestDto) {
     const activity = await lastValueFrom(
       this.activityService.GetActivity({ id: obj.activityId }),
     );
@@ -46,17 +48,33 @@ export class AppService {
     const createdReview = new this.reviewModel(obj);
     const res = await createdReview.save();
     console.log('res', res, createdReview);
-    return res.toJSON();
+    // Get user by id
+    const user = await this.userModel.findOne({ userId: obj.userId });
+    console.log('user', user);
+    return {
+      ...res.toJSON(),
+      name: user.name,
+      email: user.email,
+    };
   }
 
-  async findByActivityId({
-    activityId,
-  }: FindByActivityIdRequestDto): Promise<{ reviews: Review[] }> {
+  async findByActivityId({ activityId }: FindByActivityIdRequestDto) {
     const reviews = await this.reviewModel.find({ activityId: activityId });
     console.log(
       'reviews',
       reviews.map((r) => r.toJSON()),
     );
-    return { reviews: reviews.map((r) => r.toJSON()) };
+
+    const data = await Promise.all(
+      reviews.map(async (r) => {
+        const user = await this.userModel.findOne({ userId: r.userId });
+        return {
+          ...r.toJSON(),
+          name: user.name,
+          email: user.email,
+        };
+      }),
+    );
+    return { reviews: data };
   }
 }

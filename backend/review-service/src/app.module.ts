@@ -6,6 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Review, ReviewSchema } from './schemas/review';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { RmqModule } from './rabbitmq/rmq.module';
+import { User, UserSchema } from './schemas/user';
 
 @Module({
   imports: [
@@ -20,7 +22,10 @@ import { join } from 'path';
       }),
       inject: [ConfigService], // Inject ConfigService
     }),
-    MongooseModule.forFeature([{ name: Review.name, schema: ReviewSchema }]),
+    MongooseModule.forFeature([
+      { name: Review.name, schema: ReviewSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
     ClientsModule.registerAsync([
       {
         name: 'ACTIVITY_PACKAGE',
@@ -39,6 +44,7 @@ import { join } from 'path';
         inject: [ConfigService],
       },
     ]),
+    RmqModule,
   ],
   controllers: [AppController],
   providers: [AppService],
