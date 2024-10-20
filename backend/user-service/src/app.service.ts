@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
 import { User } from 'src/entities/user.entity';
+import { RmqService } from './rabbitmq/rmq.service';
 
 @Injectable()
 export class AppService {
@@ -11,6 +12,7 @@ export class AppService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly rmqService: RmqService,
   ) {}
 
   async register(email: string, password: string, name: string) {
@@ -21,6 +23,11 @@ export class AppService {
       name,
     });
     await this.userRepository.save(user);
+    this.rmqService.sendMessage(
+      { email: user.email, name: user.name },
+      'user_exchange',
+      'create.user',
+    );
     const token = this.jwtService.sign({ email: user.email, id: user.id });
     return { token };
   }
