@@ -35,6 +35,7 @@ export class ActivityController {
     if (!req.userId) throw new Error('User not found');
     data.ownerId = req.userId;
     this.rmqService.sendMessage(data, 'activity_exchange', 'create.activity');
+    return true;
   }
 
   @Get()

@@ -15,8 +15,8 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async onModuleInit() {
-    console.log('fsafsdfgsadgdsgfsgsgs');
     await this.connect();
+    await this.consumeMessages();
   }
 
   async onModuleDestroy() {
@@ -32,12 +32,11 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
   async connect() {
     this.connection = await amqp.connect('amqp://localhost');
     this.channel = await this.connection.createChannel();
-    for (const exchange of exchanges) {
-      await this.assertExchange(exchange);
-    }
-    for (const queue of queues) {
-      await this.assertQueue(queue);
-    }
+    await Promise.all(
+      exchanges.map((exchange) => this.assertExchange(exchange)),
+    );
+
+    await Promise.all(queues.map((queue) => this.assertQueue(queue)));
   }
 
   async sendMessage(obj: any, exchangeName: string, routingKey: string) {
@@ -80,7 +79,11 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
           startDate: new Date(createActivityDto.startDate),
           endDate: new Date(createActivityDto.endDate),
         });
-        await this.activitiesRepository.save(activity);
+        try {
+          await this.activitiesRepository.save(activity);
+        } catch (error) {
+          console.error('Error while saving activity:', error);
+        }
         this.channel.ack(msg); // Acknowledge message after processing
       }
     });

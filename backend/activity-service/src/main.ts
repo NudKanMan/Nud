@@ -20,8 +20,6 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
-  const rabbitMQService = app.get(RmqService);
-  await rabbitMQService.connect();
-  await rabbitMQService.consumeMessages();
+  await app.init();
 }
 bootstrap();
