@@ -2,6 +2,7 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as amqp from 'amqplib';
 import { exchanges, queues } from 'src/constants/rmq';
+import { ActivityParticipant } from 'src/entities/activity-participant.entity';
 import { Activity } from 'src/entities/activity.entity';
 import { Repository } from 'typeorm';
 @Injectable()
@@ -12,6 +13,8 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
   constructor(
     @InjectRepository(Activity)
     private activitiesRepository: Repository<Activity>,
+    @InjectRepository(ActivityParticipant)
+    private activitiesParticipantRepository: Repository<ActivityParticipant>,
   ) {}
 
   async onModuleInit() {
@@ -73,14 +76,19 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
       if (msg !== null) {
         const messageContent = msg.content.toString();
         const createActivityDto = JSON.parse(messageContent);
-        console.log(`Message received: ${createActivityDto}`);
-        const activity = this.activitiesRepository.create({
-          ...createActivityDto,
-          startDate: new Date(createActivityDto.startDate),
-          endDate: new Date(createActivityDto.endDate),
-        });
+        //console.log(`Message received: ${createActivityDto}`);
+
         try {
-          await this.activitiesRepository.save(activity);
+          const activity = await this.activitiesRepository.save({
+            ...createActivityDto,
+            currentParticipants: 1,
+            startDate: new Date(createActivityDto.startDate),
+            endDate: new Date(createActivityDto.endDate),
+          });
+          await this.activitiesParticipantRepository.save({
+            activityId: activity.id,
+            userId: createActivityDto.ownerId,
+          });
         } catch (error) {
           console.error('Error while saving activity:', error);
         }
