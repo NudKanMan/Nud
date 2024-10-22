@@ -8,6 +8,16 @@ service FriendMatchingService {
   rpc GetFriendList(GetFriendListRequest) returns (GetFriendListResponse) {}
   rpc GetFriendRequestList(GetFriendRequestListRequest) returns (GetFriendRequestListResponse) {}
   rpc IsFriend(IsFriendRequest) returns (IsFriendResponse) {}
+  rpc RejectFriend(RejectFriendRequest) returns (RejectFriendResponse) {}
+}
+
+message RejectFriendRequest {
+  string userId = 1;
+  string friendId = 2;
+}
+
+message RejectFriendResponse {
+  bool success = 1;
 }
 
 message IsFriendRequest{

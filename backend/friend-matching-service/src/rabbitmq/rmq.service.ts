@@ -1,13 +1,22 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as amqp from 'amqplib';
 import { exchanges, queues } from 'src/constant/rmq';
+import { User } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
 @Injectable()
 export class RmqService implements OnModuleInit, OnModuleDestroy {
   private connection: amqp.Connection;
   private channel: amqp.Channel;
 
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
   async onModuleInit() {
     await this.connect(); // Call connect when the module initializes
+    await this.consumeMessages(); // Call consumeMessages when the module initializes
   }
 
   async onModuleDestroy() {
@@ -49,5 +58,33 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  async consumeMessages() {}
+  async consumeMessages() {
+    if (!this.channel) {
+      console.error('Channel is not initialized');
+      return;
+    }
+
+    await this.channel.consume(
+      'friend_matching_user_info_queue',
+      async (msg) => {
+        if (msg !== null) {
+          const messageContent = msg.content.toString();
+          const userInfo = JSON.parse(messageContent);
+          console.log(`Message received: ${userInfo}`);
+
+          try {
+            await this.userRepository.save({
+              id: userInfo.id,
+              email: userInfo.email,
+              name: userInfo.name,
+              userId: userInfo.id,
+            });
+          } catch (error) {
+            console.error('Error while saving user info:', error);
+          }
+          this.channel.ack(msg); // Acknowledge message after processing
+        }
+      },
+    );
+  }
 }

@@ -7,13 +7,13 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const url = app.get(ConfigService).get('USER_SERVICE_URL');
+  const url = app.get(ConfigService).get('FRIEND_MATCHING_SERVICE_URL');
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      package: 'user',
-      protoPath: join(__dirname, '../../proto/user.proto'),
+      package: 'friendmatching',
+      protoPath: join(__dirname, '../../proto/friendmatching.proto'),
       url,
     },
   });

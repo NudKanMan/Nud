@@ -37,4 +37,9 @@ export class AppController {
   async isFriend(data: any) {
     return this.friendMatchingService.isFriend(data);
   }
+
+  @GrpcMethod('FriendMatchingService', 'RejectFriend')
+  async rejectFriend(data: any) {
+    return this.friendMatchingService.rejectFriend(data);
+  }
 }

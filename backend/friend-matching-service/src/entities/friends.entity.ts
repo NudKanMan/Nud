@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  Column,
 } from 'typeorm';
 import { User } from './user.entity';
 
@@ -13,12 +14,16 @@ export class Friends {
   id: string;
 
   @ManyToOne(() => User, (user) => user.id)
-  @JoinColumn({ name: 'userId' })
   user: User;
 
+  @Column({ unique: true })
+  userId: string;
+
   @ManyToOne(() => User, (user) => user.id)
-  @JoinColumn({ name: 'friendId' })
   friend: User;
+
+  @Column({ unique: true })
+  friendId: string;
 
   @CreateDateColumn()
   createdAt: Date;

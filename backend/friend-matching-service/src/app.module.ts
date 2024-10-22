@@ -25,7 +25,7 @@ import { Friends } from './entities/friends.entity';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([FriendRequest, User]),
+    TypeOrmModule.forFeature([FriendRequest, User, Friends]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({

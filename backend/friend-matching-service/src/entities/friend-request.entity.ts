@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  ManyToOne,
 } from 'typeorm';
 import { User } from './user.entity';
 
@@ -14,10 +15,16 @@ export class FriendRequest {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => User, (user) => user.userId)
+  @ManyToOne(() => User)
+  sender: User;
+
+  @Column()
   senderId: string;
 
-  @OneToOne(() => User, (user) => user.userId)
+  @ManyToOne(() => User)
+  receiver: User;
+
+  @Column()
   receiverId: string;
 
   @Column({

@@ -10,7 +10,4 @@ export class User {
 
   @Column()
   name: string;
-
-  @Column({ unique: true })
-  userId: string;
 }
