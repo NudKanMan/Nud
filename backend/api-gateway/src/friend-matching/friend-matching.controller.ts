@@ -64,13 +64,11 @@ export class FriendMatchingController {
     });
   }
 
-  @Get('/reject-friend/:id')
+  @Post('/reject-friend')
   @UseGuards(JwtUserGuard)
-  rejectFriend(@Req() req, @Param('id') id: string) {
+  rejectFriend(@Req() req, @Body() data: AcceptFriendRequestDto) {
     if (!req.userId) throw new Error('User not found');
-    return this.friendMatchingService.rejectFriend({
-      userId: req.userId,
-      friendId: id,
-    });
+    data.userId = req.userId;
+    return this.friendMatchingService.rejectFriend(data);
   }
 }

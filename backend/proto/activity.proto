@@ -7,10 +7,23 @@ service ActivityService {
   rpc CreateActivity (CreateActivityRequest) returns (ActivityResponse);
   rpc UpdateActivity (UpdateActivityRequest) returns (ActivityResponse);
   rpc DeleteActivity (DeleteActivityRequest) returns (Empty);
-  rpc GetActivity (GetActivityRequest) returns (ActivityResponse);
+  rpc GetActivity (GetActivityRequest) returns (GetActivityResponse);
   rpc ListActivities (ListActivitiesRequest) returns (ListActivitiesResponse);
   rpc JoinActivity (JoinActivityRequest) returns (ActivityResponse);
   rpc LeaveActivity (LeaveActivityRequest) returns (ActivityResponse);
+}
+
+
+message UserInfo {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message GetActivityResponse {
+  ActivityResponse activity = 1;
+  bool isOwner = 2;
+  repeated UserInfo participants = 3;
 }
 
 message LeaveActivityRequest {
@@ -48,6 +61,7 @@ message DeleteActivityRequest {
 
 message GetActivityRequest {
   string id = 1; 
+  string userId = 2;
 }
 
 message ActivityResponse {

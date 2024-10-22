@@ -11,13 +11,6 @@ export class CreateReviewRequestDto {
   activityId: string;
 
   @ApiProperty({
-    description: 'The user ID of the review',
-    default: '111-222-333',
-  })
-  @IsString()
-  userId: string;
-
-  @ApiProperty({
     description: 'The rating of the review',
     default: 5,
   })
@@ -31,4 +24,6 @@ export class CreateReviewRequestDto {
   @IsString()
   @IsNotEmpty()
   comment: string;
+
+  userId: string;
 }

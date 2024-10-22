@@ -33,6 +33,7 @@ export class DeleteActivityRequestDto {
 
 export class GetActivityRequestDto {
   id: string;
+  userId: string;
 }
 
 export class EmptyDto {}

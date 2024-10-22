@@ -14,7 +14,6 @@ import { ApiTags } from '@nestjs/swagger';
 import {
   CreateActivityDto,
   UpdateActivityDto,
-  DeleteActivityDto,
   JoinActivityDto,
   LeaveActivityDto,
 } from './activity.dto';
@@ -44,8 +43,10 @@ export class ActivityController {
   }
 
   @Get('/:id')
-  getActivity(@Param('id') id: string) {
-    return this.activityService.getActivity({ id });
+  @UseGuards(JwtUserGuard)
+  getActivity(@Param('id') id: string, @Req() req) {
+    if (!req.userId) throw new Error('User not found');
+    return this.activityService.getActivity({ id, userId: req.userId });
   }
 
   @Put('/join')
@@ -76,11 +77,10 @@ export class ActivityController {
     return this.activityService.updateActivity({ id, ...data });
   }
 
-  @Delete()
+  @Delete('/:id')
   @UseGuards(JwtUserGuard)
-  deleteActivity(@Body() data: DeleteActivityDto, @Req() req) {
+  deleteActivity(@Req() req, @Param('id') id: string) {
     if (!req.userId) throw new Error('User not found');
-    data.ownerId = req.userId;
-    return this.activityService.deleteActivity(data);
+    return this.activityService.deleteActivity({ id, ownerId: req.userId });
   }
 }

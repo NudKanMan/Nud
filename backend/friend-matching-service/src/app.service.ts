@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FriendRequest } from 'src/entities/friend-request.entity';
-import { RmqService } from './rabbitmq/rmq.service';
 import { User } from './entities/user.entity';
 import { FriendRequestStatus } from './constant/enum';
 import { Friends } from './entities/friends.entity';
@@ -16,7 +15,6 @@ export class AppService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Friends)
     private readonly friendsRepository: Repository<Friends>,
-    private readonly rmqService: RmqService,
   ) {}
 
   async requestFriend(data: any) {

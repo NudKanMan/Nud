@@ -1,35 +1,88 @@
 import {
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Activity } from 'src/entities/activity.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import {
   CreateActivityRequestDto,
   DeleteActivityRequestDto,
+  GetActivityRequestDto,
   JoinActivityRequestDto,
   UpdateActivityRequestDto,
 } from './activity.dto';
 import { ActivityParticipant } from './entities/activity-participant.entity';
+import { Observable, lastValueFrom } from 'rxjs';
+import { ClientGrpc } from '@nestjs/microservices';
+
+interface FriendMatchingGrpcService {
+  RequestFriend(data: any): Observable<any>;
+  AcceptFriend(data: any): Observable<any>;
+  GetFriendList(data: any): Observable<any>;
+  GetFriendRequestList(data: any): Observable<any>;
+  IsFriend(data: any): Observable<any>;
+  RejectFriend(data: any): Observable<any>;
+}
 
 @Injectable()
 export class AppService {
+  private friendMatchingService: FriendMatchingGrpcService;
   constructor(
     @InjectRepository(Activity)
     private activitiesRepository: Repository<Activity>,
     @InjectRepository(ActivityParticipant)
     private activityParticipantsRepository: Repository<ActivityParticipant>,
+    @Inject('FRIEND_MATCHING_PACKAGE')
+    private readonly friendMatchingGrpcService: ClientGrpc,
   ) {}
 
-  async findActivity(id: string): Promise<Activity> {
+  onModuleInit() {
+    this.friendMatchingService =
+      this.friendMatchingGrpcService.getService<FriendMatchingGrpcService>(
+        'FriendMatchingService',
+      );
+  }
+
+  async findAct(id: string) {
     const activity = await this.activitiesRepository.findOne({ where: { id } });
     if (!activity) {
       throw new NotFoundException(`Activity with ID ${id} not found`);
     }
     console.log('activity', activity);
     return activity;
+  }
+
+  async findActivity({ id, userId }: GetActivityRequestDto): Promise<any> {
+    const activity = await this.activitiesRepository.findOne({ where: { id } });
+    if (!activity) {
+      throw new NotFoundException(`Activity with ID ${id} not found`);
+    }
+    const friend = await lastValueFrom(
+      this.friendMatchingService.GetFriendList({ userId: userId }),
+    );
+    const allParticipants = await this.activityParticipantsRepository.find({
+      where: { activityId: id },
+    });
+
+    const participants = [];
+
+    friend.friends.map((friend) => {
+      console.log('friend', friend);
+      if (
+        allParticipants.find((participant) => participant.userId === friend.id)
+      ) {
+        participants.push(friend);
+      }
+    });
+
+    return {
+      activity: activity,
+      participants: participants,
+      isOwner: activity.ownerId === userId,
+    };
   }
 
   async findAllActivities() {
@@ -41,7 +94,7 @@ export class AppService {
   }
 
   async joinActivity(data: JoinActivityRequestDto): Promise<Activity> {
-    const activity = await this.findActivity(data.id);
+    const activity = await this.findAct(data.id);
     if (!activity || activity.status === 'CLOSED') {
       throw new NotFoundException('Activity is already closed or not found');
     }
@@ -55,7 +108,7 @@ export class AppService {
   }
 
   async leaveActivity(data: JoinActivityRequestDto): Promise<Activity> {
-    const activity = await this.findActivity(data.id);
+    const activity = await this.findAct(data.id);
     if (!activity || activity.status === 'CLOSED') {
       throw new NotFoundException('Activity is already closed or not found');
     }
@@ -84,7 +137,7 @@ export class AppService {
   async updateActivity(
     updateActivityDto: UpdateActivityRequestDto,
   ): Promise<Activity> {
-    const activity = await this.findActivity(updateActivityDto.id);
+    const activity = await this.findAct(updateActivityDto.id);
     if (activity.ownerId !== updateActivityDto.ownerId) {
       throw new UnauthorizedException(
         'You are not authorized to update this activity',
@@ -102,7 +155,7 @@ export class AppService {
 
   async deleteActivity(data: DeleteActivityRequestDto): Promise<boolean> {
     const { id, ownerId } = data;
-    const activity = await this.findActivity(id);
+    const activity = await this.findAct(id);
     if (
       !activity ||
       activity.status === 'CLOSED' ||

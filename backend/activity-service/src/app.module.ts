@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Activity } from './entities/activity.entity';
 import { ActivityParticipant } from './entities/activity-participant.entity';
 import { RmqModule } from './rabbitmq/rmq.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,6 +27,24 @@ import { RmqModule } from './rabbitmq/rmq.module';
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([Activity, ActivityParticipant]),
+    ClientsModule.registerAsync([
+      {
+        name: 'FRIEND_MATCHING_PACKAGE',
+        useFactory: async (configService: ConfigService) => {
+          const url = configService.get<string>('FRIEND_MATCHING_SERVICE_URL');
+          console.log('url', url);
+          return {
+            transport: Transport.GRPC,
+            options: {
+              package: 'friendmatching',
+              protoPath: join(__dirname, '../../proto/friendmatching.proto'),
+              url,
+            },
+          };
+        },
+        inject: [ConfigService],
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

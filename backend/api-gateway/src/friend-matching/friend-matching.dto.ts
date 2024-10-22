@@ -5,24 +5,18 @@ export class RequestFriendDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  userId: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   friendId: string;
+
+  userId: string;
 }
 
 export class AcceptFriendRequestDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  userId: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   friendId: string;
+
+  userId: string;
 }
 
 export class GetFriendRequestListRequestDto {

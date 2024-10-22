@@ -25,14 +25,6 @@ export class CreateActivityDto {
   description: string;
 
   @ApiProperty({
-    description: 'The owner ID of the activity',
-    default: '111-222-333',
-  })
-  @IsString()
-  @IsNotEmpty()
-  ownerId: string;
-
-  @ApiProperty({
     description: 'The maximum number of participants',
     default: 10,
   })
@@ -55,6 +47,8 @@ export class CreateActivityDto {
   @IsISO8601()
   @IsNotEmpty()
   endDate: string;
+
+  ownerId: string;
 }
 
 // DTO for updating an activity
@@ -85,12 +79,6 @@ export class UpdateActivityDto {
   @IsNotEmpty()
   endDate: string;
 
-  @ApiProperty({
-    description: 'The owner ID of the activity',
-    default: '111-222-333',
-  })
-  @IsString()
-  @IsNotEmpty()
   ownerId: string;
 }
 
@@ -101,9 +89,6 @@ export class JoinActivityDto {
   @IsNotEmpty()
   id: string;
 
-  @ApiProperty({ description: 'The ID of the user', type: String })
-  @IsString()
-  @IsNotEmpty()
   userId: string;
 }
 
@@ -114,23 +99,7 @@ export class LeaveActivityDto {
   @IsNotEmpty()
   id: string;
 
-  @ApiProperty({ description: 'The ID of the user', type: String })
-  @IsString()
-  @IsNotEmpty()
   userId: string;
-}
-
-// DTO for deleting an activity
-export class DeleteActivityDto {
-  @ApiProperty({ description: 'The ID of the activity', type: String })
-  @IsUUID()
-  @IsNotEmpty()
-  id: string;
-
-  @ApiProperty({ description: 'The owner ID of the activity' })
-  @IsString()
-  @IsNotEmpty()
-  ownerId: string;
 }
 
 // DTO for getting an activity by ID

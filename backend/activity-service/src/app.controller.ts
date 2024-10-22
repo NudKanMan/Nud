@@ -36,7 +36,7 @@ export class AppController {
 
   @GrpcMethod('ActivityService', 'GetActivity')
   async getActivity(data: GetActivityRequestDto) {
-    return this.activityService.findActivity(data.id);
+    return this.activityService.findActivity(data);
   }
 
   @GrpcMethod('ActivityService', 'ListActivities')

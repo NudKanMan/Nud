@@ -40,7 +40,10 @@ export class AppService {
 
   async createReview(obj: CreateReviewRequestDto) {
     const activity = await lastValueFrom(
-      this.activityService.GetActivity({ id: obj.activityId }),
+      this.activityService.GetActivity({
+        id: obj.activityId,
+        userId: obj.userId,
+      }),
     );
     if (!activity) {
       throw new Error('Activity not found');
