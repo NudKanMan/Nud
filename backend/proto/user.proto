@@ -36,6 +36,7 @@ message GetProfileRequest {
 message GetProfileResponse {
   string email = 1;
   string name = 2;
+  string id = 3;
 }
 
 message UpdateProfileRequest {

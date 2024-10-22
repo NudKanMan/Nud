@@ -7,6 +7,8 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -18,6 +20,7 @@ import {
   UpdateProfileDTO,
   UpdateProfileRequestDTO,
 } from './user.dto';
+import { JwtUserGuard } from 'src/guard/auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -32,6 +35,13 @@ export class UserController {
   @Post('/login')
   login(@Body() data: LoginRequestDto) {
     return this.userService.login(data);
+  }
+
+  @Get('getmyprofile')
+  @UseGuards(JwtUserGuard)
+  getMyProfile(@Req() req) {
+    if (!req.userId) throw new Error('User not found');
+    return this.getProfile(req.userId);
   }
 
   @Get('/getprofile/:id')

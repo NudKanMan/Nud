@@ -61,7 +61,7 @@ export class AppService {
     const user = await this.userRepository.findOne({
       where: { id },
     });
-    return { email: user.email, name: user.name };
+    return { email: user.email, name: user.name, id: user.id };
   }
 
   async updateProfile(token: string, email: string, name: string) {
