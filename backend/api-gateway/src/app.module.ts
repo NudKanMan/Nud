@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { ActivityModule } from './activity/activity.module';
 import { ReviewModule } from './review/review.module';
 import { RmqModule } from './rabbitmq/rmq.module';
+import { FriendMatchingModule } from './friend-matching/friend-matching.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { RmqModule } from './rabbitmq/rmq.module';
     ActivityModule,
     ReviewModule,
     RmqModule,
+    FriendMatchingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -21,6 +21,13 @@ services:
       - ./activity-service/.env
     ports:
       - "3307:3307"
+  friend-matching-service:
+    image: mysql:8.0
+    container_name: mysql_friend_matching_service
+    env_file:
+      - ./friend-matching-service/.env
+    ports:
+      - "3308:3308"
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
