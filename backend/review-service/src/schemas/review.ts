@@ -21,6 +21,9 @@ export class Review extends Document {
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
+  @Prop({ default: null })
+  updatedAt: Date;
 }
 
 const ReviewSchema = SchemaFactory.createForClass(Review);

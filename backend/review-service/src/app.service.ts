@@ -1,9 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review } from './schemas/review';
 import { Model } from 'mongoose';
 import {
   CreateReviewRequestDto,
+  EditReviewById,
   FindByActivityIdRequestDto,
 } from './review.dto';
 import { ClientGrpc } from '@nestjs/microservices';
@@ -39,6 +40,7 @@ export class AppService {
   }
 
   async createReview(obj: CreateReviewRequestDto) {
+    console.log(obj);
     const activity = await lastValueFrom(
       this.activityService.GetActivity({
         id: obj.activityId,
@@ -79,5 +81,44 @@ export class AppService {
       }),
     );
     return { reviews: data };
+  }
+
+  async findReviewById(reviewId: string): Promise<Review> {
+    const review = await this.reviewModel.findOne({ _id: reviewId });
+    if (!review) {
+      throw new HttpException(
+        `Review with id ${reviewId} is not found`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return review;
+  }
+
+  async editReviewById({ reviewId, editReviewObject }: EditReviewById) {
+    try {
+      const review = await this.findReviewById(reviewId);
+      if (editReviewObject.comment) {
+        review.comment = editReviewObject.comment;
+      }
+      if (editReviewObject.rating) {
+        review.rating = Number(editReviewObject.rating);
+      }
+      review.updatedAt = new Date();
+      const res = await review.save();
+      const data = {
+        id: res._id,
+        activityId: res.activityId,
+        userId: res.userId,
+        rating: res.rating,
+        comment: res.comment,
+        createdAt: res.createdAt,
+        updatedAt: res.updatedAt,
+      } as Review;
+
+      return { review: data };
+    } catch (error) {
+      throw new Error(error.toString());
+    }
   }
 }

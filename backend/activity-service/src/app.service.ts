@@ -56,6 +56,7 @@ export class AppService {
   }
 
   async findActivity({ id, userId }: GetActivityRequestDto): Promise<any> {
+    console.log(id, userId);
     const activity = await this.activitiesRepository.findOne({ where: { id } });
     if (!activity) {
       throw new NotFoundException(`Activity with ID ${id} not found`);
@@ -68,15 +69,26 @@ export class AppService {
     });
 
     const participants = [];
-
-    friend.friends.map((friend) => {
-      console.log('friend', friend);
-      if (
-        allParticipants.find((participant) => participant.userId === friend.id)
-      ) {
-        participants.push(friend);
-      }
-    });
+    if (friend?.frineds) {
+      friend.friends.map((friend) => {
+        console.log('friend', friend);
+        if (
+          allParticipants.find(
+            (participant) => participant.userId === friend.id,
+          )
+        ) {
+          participants.push(friend);
+        }
+      });
+    }
+    // friend.friends.map((friend) => {
+    //   console.log('friend', friend);
+    //   if (
+    //     allParticipants.find((participant) => participant.userId === friend.id)
+    //   ) {
+    //     participants.push(friend);
+    //   }
+    // });
 
     return {
       activity: activity,
