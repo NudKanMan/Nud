@@ -98,6 +98,12 @@ export class AppService {
     if (!activity || activity.status === 'CLOSED') {
       throw new NotFoundException('Activity is already closed or not found');
     }
+    const existUser = await this.activityParticipantsRepository.findOne({
+      where: { userId: data.userId, activityId: data.id },
+    });
+    if (existUser) {
+      throw new NotFoundException('User is already joined this activity!');
+    }
     activity.currentParticipants += 1;
     const participant = await this.activityParticipantsRepository.save({
       activityId: data.id,
