@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { RmqModule } from './rabbitmq/rmq.module';
 import { FriendRequest } from './entities/friend-request.entity';
 import { User } from './entities/user.entity';
+import { Friends } from './entities/friends.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { User } from './entities/user.entity';
         port: configService.get('DATABASE_PORT'),
         database: configService.get('MYSQL_DATABASE'),
         synchronize: true,
-        entities: [FriendRequest, User],
+        entities: [FriendRequest, User, Friends],
       }),
       inject: [ConfigService],
     }),

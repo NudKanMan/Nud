@@ -20,16 +20,21 @@ export class AppController {
 
   @GrpcMethod('FriendMatchingService', 'AcceptFriend')
   async acceptFriend(data: any) {
-    // return this.friendMatchingService.acceptFriend(data);
+    return this.friendMatchingService.acceptFriend(data);
   }
 
   @GrpcMethod('FriendMatchingService', 'GetFriendList')
   async getFriendList(data: any) {
-    // return this.friendMatchingService.getFriendList(data);
+    return this.friendMatchingService.getFriendList(data);
   }
 
   @GrpcMethod('FriendMatchingService', 'GetFriendRequestList')
   async getFriendRequestList(data: any) {
-    // return this.friendMatchingService.getFriendRequestList(data);
+    return this.friendMatchingService.getFriendRequestList(data);
+  }
+
+  @GrpcMethod('FriendMatchingService', 'IsFriend')
+  async isFriend(data: any) {
+    return this.friendMatchingService.isFriend(data);
   }
 }
