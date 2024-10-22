@@ -27,3 +27,25 @@ export class CreateReviewRequestDto {
 
   userId: string;
 }
+
+export class EditReviewRequest {
+  reviewId: string;
+
+  editReviewObject: EditReviewObject;
+}
+
+export class EditReviewObject {
+  @ApiProperty({
+    description: 'The updated comment of the review',
+    default: 'updatedComment',
+  })
+  @IsString()
+  comment: string;
+
+  @ApiProperty({
+    description: 'The updated rating of the review',
+    default: '3',
+  })
+  @IsString()
+  rating: string;
+}

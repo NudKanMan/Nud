@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   CreateReviewRequestDto,
+  EditReviewById,
   FindByActivityIdRequestDto,
 } from './review.dto';
 
@@ -18,5 +19,10 @@ export class AppController {
   @GrpcMethod('ReviewService', 'FindByActivityId')
   async findByActivityId(data: FindByActivityIdRequestDto) {
     return this.appService.findByActivityId(data);
+  }
+
+  @GrpcMethod('ReviewService', 'EditReviewById')
+  async editReviewById(data: EditReviewById) {
+    return this.appService.editReviewById(data);
   }
 }

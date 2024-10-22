@@ -5,6 +5,21 @@ package review;
 service ReviewService{
     rpc CreateReview(CreateReviewRequest) returns (ReviewResponse);
     rpc FindByActivityId(FindByActivityIdRequest) returns (FindAllResponse);
+    rpc EditReviewById(EditReviewRequest) returns (EditReviewResponse);
+}
+
+message EditReviewRequest{
+    string reviewId = 1;
+    EditReviewObject editReviewObject = 2;
+}
+
+message EditReviewResponse{
+    ReviewResponse review =1;
+}
+
+message EditReviewObject{
+    string comment = 1;
+    string rating =2;
 }
 
 message CreateReviewRequest{
