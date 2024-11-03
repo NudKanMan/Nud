@@ -1,0 +1,41 @@
+# Stage 1: Build the NestJS app
+FROM node:20 AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy the proto folder
+COPY proto ./proto
+
+# Copy dependency files and install dependencies
+COPY api-gateway/package*.json api-gateway/yarn.lock ./api-gateway/
+RUN cd api-gateway && yarn
+
+# Copy the rest of the app source code
+COPY api-gateway ./api-gateway
+
+# Build the app
+RUN cd api-gateway && yarn build
+
+# Stage 2: Run the NestJS app
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy only necessary files from the builder stage
+COPY --from=builder /app/api-gateway/package*.json ./
+COPY --from=builder /app/api-gateway/dist ./dist
+COPY --from=builder /app/api-gateway/node_modules ./node_modules
+
+# Copy the proto folder from the builder stage
+COPY --from=builder /app/proto ./dist/proto
+
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Set NODE_ENV to production
+ENV NODE_ENV=production
+
+# Start the app
+CMD ["node", "dist/main"]

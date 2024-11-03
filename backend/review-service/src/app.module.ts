@@ -31,12 +31,13 @@ import { User, UserSchema } from './schemas/user';
         name: 'ACTIVITY_PACKAGE',
         useFactory: async (configService: ConfigService) => {
           const url = configService.get<string>('ACTIVITY_SERVICE_URL');
+          const protoPath = configService.get<string>('ACTIVITY_PROTO_PATH');
           console.log('url', url);
           return {
             transport: Transport.GRPC,
             options: {
               package: 'activities',
-              protoPath: join(__dirname, '../../proto/activity.proto'),
+              protoPath: join(__dirname, protoPath),
               url,
             },
           };

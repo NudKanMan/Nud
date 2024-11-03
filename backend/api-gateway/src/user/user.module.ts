@@ -13,11 +13,12 @@ import { join } from 'path';
         name: GRPC_PACKAGE.USER_PACKAGE,
         useFactory: async (configService: ConfigService) => {
           const url = configService.get<string>('USER_SERVICE_URL');
+          const protoPath = configService.get<string>('USER_PROTO_PATH');
           return {
             transport: Transport.GRPC,
             options: {
               package: 'user',
-              protoPath: join(__dirname, '../../../proto/user.proto'),
+              protoPath: join(__dirname, protoPath),
               url,
             },
           };

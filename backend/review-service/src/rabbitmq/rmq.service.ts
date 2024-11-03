@@ -1,4 +1,5 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import * as amqp from 'amqplib';
 import { Model } from 'mongoose';
@@ -10,6 +11,7 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
   private channel: amqp.Channel;
 
   constructor(
+    private readonly configService: ConfigService,
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
@@ -29,7 +31,8 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
   }
 
   async connect() {
-    this.connection = await amqp.connect('amqp://localhost');
+    const url = this.configService.get('RMQ_URL');
+    this.connection = await amqp.connect(url);
     this.channel = await this.connection.createChannel();
     await Promise.all(
       exchanges.map((exchange) => this.assertExchange(exchange)),

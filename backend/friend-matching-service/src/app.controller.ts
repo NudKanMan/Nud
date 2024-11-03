@@ -1,13 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GrpcMethod } from '@nestjs/microservices';
-import {
-  LoginRequestDto,
-  RegisterRequestDto,
-  GetProfileRequestDto,
-  UpdateProfileRequestDto,
-  DeleteProfileRequestDto,
-} from './user.dto';
 
 @Controller()
 export class AppController {

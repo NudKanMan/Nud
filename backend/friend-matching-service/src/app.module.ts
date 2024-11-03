@@ -20,6 +20,7 @@ import { Friends } from './entities/friends.entity';
         password: configService.get('MYSQL_ROOT_PASSWORD'),
         port: configService.get('DATABASE_PORT'),
         database: configService.get('MYSQL_DATABASE'),
+        host: configService.get('DATABASE_HOST'),
         synchronize: true,
         entities: [FriendRequest, User, Friends],
       }),

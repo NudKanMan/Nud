@@ -18,6 +18,7 @@ import { RmqModule } from './rabbitmq/rmq.module';
         password: configService.get('MYSQL_ROOT_PASSWORD'),
         port: configService.get('DATABASE_PORT'),
         database: configService.get('MYSQL_DATABASE'),
+        host: configService.get('DATABASE_HOST'),
         synchronize: true,
         entities: [User],
       }),

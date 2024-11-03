@@ -13,11 +13,14 @@ import { join } from 'path';
         name: GRPC_PACKAGE.FRIEND_MATCHING_PACKAGE,
         useFactory: async (configService: ConfigService) => {
           const url = configService.get<string>('FRIEND_MATCHING_SERVICE_URL');
+          const protoPath = configService.get<string>(
+            'FRIEND_MATCHING_PROTO_PATH',
+          );
           return {
             transport: Transport.GRPC,
             options: {
               package: 'friendmatching',
-              protoPath: join(__dirname, '../../../proto/friendmatching.proto'),
+              protoPath: join(__dirname, protoPath),
               url,
             },
           };

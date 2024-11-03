@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: friend-matching-service
+  labels:
+    app: friend-matching-service
+spec:
+  replicas: 1 # Number of pods to run for high availability
+  selector:
+    matchLabels:
+      app: friend-matching-service
+  template:
+    metadata:
+      labels:
+        app: friend-matching-service
+    spec:
+      containers:
+        - name: friend-matching-service
+          image: tumktp/nud-friend-matching:latest # Replace with your Docker image
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5005 # The port your application listens to
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: FRIEND_MATCHING_SERVICE_URL
+              value: "localhost:5005"
+            - name: DATABASE_HOST
+              value: "friend-matching-service-mysql"
+            - name: MYSQL_ROOT_USERNAME
+              value: "root"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+            - name: DATABASE_PORT
+              value: "3308"
+            - name: MYSQL_DATABASE
+              value: "nud-friend-matching-service"
+            - name: FRIEND_MATCHING_PROTO_PATH
+              value: "./proto/friendmatching.proto"
+            - name: RMQ_URL
+              value: "amqp://rabbitmq:5672"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe: # Checks if the gRPC server port is open
+            tcpSocket:
+              port: 5005
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe: # Checks if the gRPC server port is ready to accept traffic
+            tcpSocket:
+              port: 5005
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: friend-matching-service
+spec:
+  type: LoadBalancer # Use ClusterIP for internal access only or NodePort for limited external access
+  ports:
+    - protocol: TCP
+      port: 5005
+      targetPort: 5005
+  selector:
+    app: friend-matching-service
+
+# Add ExternalName service for mysql database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: friend-matching-service-mysql
+spec:
+  type: ExternalName
+  externalName: host.docker.internal
+  ports:
+    - port: 3308 # The port to expose
+      targetPort: 3308 # The port where MySQL is running on your localhost
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  type: ExternalName
+  externalName: host.docker.internal
+  ports:
+    - port: 5672 # The port to expose
+      targetPort: 5672 # The port where RabbitMQ is running on your localhost

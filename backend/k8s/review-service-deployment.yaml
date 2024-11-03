@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-service
+  labels:
+    app: review-service
+spec:
+  replicas: 1 # Number of pods to run for high availability
+  selector:
+    matchLabels:
+      app: review-service
+  template:
+    metadata:
+      labels:
+        app: review-service
+    spec:
+      containers:
+        - name: review-service
+          image: tumktp/nud-review-service:latest # Replace with your Docker image
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5004 # The port your application listens to
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: REVIEW_SERVICE_URL
+              value: "localhost:5004"
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "root"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "root"
+            - name: MONGO_INITDB_DATABASE
+              value: "nud-review-service"
+            - name: MONGO_URL
+              value: "mongodb://review-service-mongodb:27017"
+            - name: ACTIVITY_SERVICE_URL
+              value: "review-service"
+            - name: RMQ_URL
+              value: "amqp://rabbitmq:5672"
+            - name: REVIEW_PROTO_PATH
+              value: "./proto/review.proto"
+            - name: ACTIVITY_PROTO_PATH
+              value: "./proto/activity.proto"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe: # Checks if the gRPC server port is open
+            tcpSocket:
+              port: 5004
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe: # Checks if the gRPC server port is ready to accept traffic
+            tcpSocket:
+              port: 5004
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: review-service
+spec:
+  type: LoadBalancer # Use ClusterIP for internal access only or NodePort for limited external access
+  ports:
+    - protocol: TCP
+      port: 5004
+      targetPort: 5004
+  selector:
+    app: review-service
+
+# Add ExternalName service for mysql database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: review-service-monogodb
+spec:
+  type: ExternalName
+  externalName: host.docker.internal
+  ports:
+    - port: 27017
+      targetPort: 27017

@@ -14,11 +14,12 @@ import { RmqModule } from 'src/rabbitmq/rmq.module';
         name: GRPC_PACKAGE.ACTIVITY_PACKAGE,
         useFactory: async (configService: ConfigService) => {
           const url = configService.get<string>('ACTIVITY_SERVICE_URL');
+          const protoPath = configService.get<string>('ACTIVITY_PROTO_PATH');
           return {
             transport: Transport.GRPC,
             options: {
               package: 'activities',
-              protoPath: join(__dirname, '../../../proto/activity.proto'),
+              protoPath: join(__dirname, protoPath),
               url,
             },
           };

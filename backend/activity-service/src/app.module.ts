@@ -21,6 +21,7 @@ import { join } from 'path';
         password: configService.get('MYSQL_ROOT_PASSWORD'),
         port: configService.get('DATABASE_PORT'),
         database: configService.get('MYSQL_DATABASE'),
+        host: configService.get('DATABASE_HOST'),
         synchronize: true,
         entities: [Activity, ActivityParticipant],
       }),
@@ -32,12 +33,15 @@ import { join } from 'path';
         name: 'FRIEND_MATCHING_PACKAGE',
         useFactory: async (configService: ConfigService) => {
           const url = configService.get<string>('FRIEND_MATCHING_SERVICE_URL');
+          const protoPath = configService.get<string>(
+            'FRIEND_MATCHING_PROTO_PATH',
+          );
           console.log('url', url);
           return {
             transport: Transport.GRPC,
             options: {
               package: 'friendmatching',
-              protoPath: join(__dirname, '../../proto/friendmatching.proto'),
+              protoPath: join(__dirname, protoPath),
               url,
             },
           };

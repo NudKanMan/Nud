@@ -16,7 +16,17 @@
     "dev_review_service": "cd review-service && yarn dev",
     "dev_friend_matching_service": "cd friend-matching-service && yarn dev",
     "dev": "concurrently \"yarn dev_api_gateway\" \"yarn dev_user_service\" \"yarn dev_activity_service\" \"yarn dev_review_service\" \"yarn dev_friend_matching_service\"",
-    "docker": "docker compose up -d"
+    "docker": "docker compose up -d",
+    "docker:build-friend-matching": "docker build -t nud-friend-matching:latest -f Dockerfile.friend-matching-service .",
+    "docker:build-active-service": "docker build -t nud-activity-service:latest -f Dockerfile.activity-service .",
+    "docker:build-review-service": "docker build -t nud-review-service:latest -f Dockerfile.review-service .",
+    "docker:build-user-service": "docker build -t nud-user-service:latest -f Dockerfile.user-service .",
+    "docker:build-api-gateway-service": "docker build -t nud-api-gateway-service:latest -f Dockerfile.api-gateway-service .",
+    "docker:tag-friend-matching": "docker tag nud-friend-matching:latest tumktp/nud-friend-matching:latest",
+    "docker:tag-active-service": "docker tag nud-activity-service:latest tumktp/nud-activity-service:latest",
+    "docker:tag-review-service": "docker tag nud-review-service:latest tumktp/nud-review-service:latest",
+    "docker:tag-user-service": "docker tag nud-user-service:latest tumktp/nud-user-service:latest",
+    "docker:tag-api-gateway-service": "docker tag nud-api-gateway-service:latest tumktp/nud-api-gateway-service:latest"
   },
   "dependencies": {},
   "devDependencies": {

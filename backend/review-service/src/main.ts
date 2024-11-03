@@ -8,13 +8,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const url = app.get(ConfigService).get('REVIEW_SERVICE_URL');
+  const protoPath = app.get(ConfigService).get('REVIEW_PROTO_PATH');
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'review',
       url,
-      protoPath: join(__dirname, '../../proto/review.proto'),
+      protoPath: join(__dirname, protoPath),
     },
   });
 

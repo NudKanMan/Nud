@@ -1,0 +1,41 @@
+# Stage 1: Build the NestJS app
+FROM node:20 AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy the proto folder
+COPY proto ./proto
+
+# Copy dependency files and install dependencies
+COPY activity-service/package*.json activity-service/yarn.lock ./activity-service/
+RUN cd activity-service && yarn
+
+# Copy the rest of the app source code
+COPY activity-service ./activity-service
+
+# Build the app
+RUN cd activity-service && yarn build
+
+# Stage 2: Run the NestJS app
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy only necessary files from the builder stage
+COPY --from=builder /app/activity-service/package*.json ./
+COPY --from=builder /app/activity-service/dist ./dist
+COPY --from=builder /app/activity-service/node_modules ./node_modules
+
+# Copy the proto folder from the builder stage
+COPY --from=builder /app/proto ./dist/proto
+
+# Expose the port the app runs on
+EXPOSE 5003
+
+# Set NODE_ENV to production
+ENV NODE_ENV=production
+
+# Start the app
+CMD ["node", "dist/main"]

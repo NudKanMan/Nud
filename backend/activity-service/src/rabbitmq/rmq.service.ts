@@ -1,4 +1,5 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as amqp from 'amqplib';
 import { exchanges, queues } from 'src/constants/rmq';
@@ -15,6 +16,7 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
     private activitiesRepository: Repository<Activity>,
     @InjectRepository(ActivityParticipant)
     private activitiesParticipantRepository: Repository<ActivityParticipant>,
+    private readonly configService: ConfigService,
   ) {}
 
   async onModuleInit() {
@@ -33,7 +35,8 @@ export class RmqService implements OnModuleInit, OnModuleDestroy {
   }
 
   async connect() {
-    this.connection = await amqp.connect('amqp://localhost');
+    const url = this.configService.get('RMQ_URL');
+    this.connection = await amqp.connect(url);
     this.channel = await this.connection.createChannel();
     await Promise.all(
       exchanges.map((exchange) => this.assertExchange(exchange)),
