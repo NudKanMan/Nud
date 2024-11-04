@@ -68,7 +68,7 @@ export class AppService {
     });
 
     const participants = [];
-
+    // TODO .map is not a function undefined
     friend.friends.map((friend) => {
       console.log('friend', friend);
       if (

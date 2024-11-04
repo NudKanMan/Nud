@@ -22,7 +22,9 @@
     "docker:build-review-service": "docker build -t nud-review-service:latest -f Dockerfile.review-service .",
     "docker:build-user-service": "docker build -t nud-user-service:latest -f Dockerfile.user-service .",
     "docker:build-api-gateway-service": "docker build -t nud-api-gateway-service:latest -f Dockerfile.api-gateway-service .",
-    "docker:build-all": "concurrently \"yarn docker:build-friend-matching\" \"yarn docker:build-active-service\" \"yarn docker:build-review-service\" \"yarn docker:build-user-service\" \"yarn docker:build-api-gateway-service\""
+    "docker:build-all": "concurrently \"yarn docker:build-friend-matching\" \"yarn docker:build-active-service\" \"yarn docker:build-review-service\" \"yarn docker:build-user-service\" \"yarn docker:build-api-gateway-service\"",
+    "k8s:apply": "kubectl apply -f k8s/",
+    "k8s:delete": "kubectl delete -f k8s/"
   },
   "dependencies": {},
   "devDependencies": {
