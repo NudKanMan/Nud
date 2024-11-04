@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: activity-service
-          image: tumktp/nud-activity-service:latest # Replace with your Docker image
+          image: nud-activity-service:latest # Replace with your Docker image
           imagePullPolicy: Never
           ports:
             - containerPort: 5003 # The port your application listens to
@@ -24,7 +24,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: ACTIVITY_SERVICE_URL
-              value: "localhost:5003"
+              value: "0.0.0.0:5003"
             - name: DATABASE_HOST
               value: "activity-service-mysql"
             - name: MYSQL_ROOT_USERNAME
@@ -50,16 +50,16 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
-          livenessProbe: # Checks if the gRPC server port is open
-            tcpSocket:
-              port: 5003
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          readinessProbe: # Checks if the gRPC server port is ready to accept traffic
-            tcpSocket:
-              port: 5003
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          # livenessProbe: # Checks if the gRPC server port is open
+          #   grpc:
+          #     port: 5003
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          # readinessProbe: # Checks if the gRPC server port is ready to accept traffic
+          #   grpc:
+          #     port: 5003
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
 
 ---
 apiVersion: v1

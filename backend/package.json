@@ -22,11 +22,7 @@
     "docker:build-review-service": "docker build -t nud-review-service:latest -f Dockerfile.review-service .",
     "docker:build-user-service": "docker build -t nud-user-service:latest -f Dockerfile.user-service .",
     "docker:build-api-gateway-service": "docker build -t nud-api-gateway-service:latest -f Dockerfile.api-gateway-service .",
-    "docker:tag-friend-matching": "docker tag nud-friend-matching:latest tumktp/nud-friend-matching:latest",
-    "docker:tag-active-service": "docker tag nud-activity-service:latest tumktp/nud-activity-service:latest",
-    "docker:tag-review-service": "docker tag nud-review-service:latest tumktp/nud-review-service:latest",
-    "docker:tag-user-service": "docker tag nud-user-service:latest tumktp/nud-user-service:latest",
-    "docker:tag-api-gateway-service": "docker tag nud-api-gateway-service:latest tumktp/nud-api-gateway-service:latest"
+    "docker:build-all": "concurrently \"yarn docker:build-friend-matching\" \"yarn docker:build-active-service\" \"yarn docker:build-review-service\" \"yarn docker:build-user-service\" \"yarn docker:build-api-gateway-service\""
   },
   "dependencies": {},
   "devDependencies": {

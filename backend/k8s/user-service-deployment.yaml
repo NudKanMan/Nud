@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: tumktp/nud-user-service:latest # Replace with your Docker image
+          image: nud-user-service:latest # Replace with your Docker image
           imagePullPolicy: Never
           ports:
             - containerPort: 5002 # The port your application listens to
@@ -41,16 +41,16 @@ spec:
               value: "./proto/user.proto"
             - name: RMQ_URL
               value: "amqp://rabbitmq:5672"
-          livenessProbe: # Checks if the gRPC server port is open
-            grpc:
-              port: 5002
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          readinessProbe: # Checks if the gRPC server port is ready to accept traffic
-            grpc:
-              port: 5002
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          # livenessProbe: # Checks if the gRPC server port is open
+          #   grpc:
+          #     port: 5002
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          # readinessProbe: # Checks if the gRPC server port is ready to accept traffic
+          #   grpc:
+          #     port: 5002
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
 
 ---
 apiVersion: v1

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-gateway-service
-          image: tumktp/nud-api-gateway-service:latest # Replace with your Docker image
+          image: nud-api-gateway-service:latest # Replace with your Docker image
           imagePullPolicy: Never
           ports:
             - containerPort: 5000 # The port your application listens to
