@@ -34,7 +34,7 @@ spec:
             - name: MONGO_URL
               value: "mongodb://review-service-mongodb:27017"
             - name: ACTIVITY_SERVICE_URL
-              value: "review-service"
+              value: "activity-service:5003"
             - name: RMQ_URL
               value: "amqp://rabbitmq:5672"
             - name: REVIEW_PROTO_PATH
@@ -65,7 +65,7 @@ kind: Service
 metadata:
   name: review-service
 spec:
-  type: LoadBalancer # Use ClusterIP for internal access only or NodePort for limited external access
+  type: ClusterIP # Use ClusterIP for internal access only or NodePort for limited external access
   ports:
     - protocol: TCP
       port: 5004
@@ -78,7 +78,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: review-service-monogodb
+  name: review-service-mongodb
 spec:
   type: ExternalName
   externalName: host.docker.internal

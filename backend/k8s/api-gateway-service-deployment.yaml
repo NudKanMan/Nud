@@ -28,11 +28,11 @@ spec:
             - name: USER_SERVICE_URL
               value: "user-service:5002"
             - name: ACTIVITY_SERVICE_URL
-              value: "activity-service"
+              value: "activity-service:5003"
             - name: REVIEW_SERVICE_URL
-              value: "review-service"
+              value: "review-service:5004"
             - name: FRIEND_MATCHING_SERVICE_URL
-              value: "friend-matching-service"
+              value: "friend-matching-service:5005"
             - name: JWT_SECRET
               value: "secret"
             - name: USER_PROTO_PATH

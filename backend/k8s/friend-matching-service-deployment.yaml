@@ -63,7 +63,7 @@ kind: Service
 metadata:
   name: friend-matching-service
 spec:
-  type: LoadBalancer # Use ClusterIP for internal access only or NodePort for limited external access
+  type: ClusterIP # Use ClusterIP for internal access only or NodePort for limited external access
   ports:
     - protocol: TCP
       port: 5005

@@ -36,7 +36,7 @@ spec:
             - name: MYSQL_DATABASE
               value: "nud-activity-service"
             - name: FRIEND_MATCHING_SERVICE_URL
-              value: "friend-matching-service"
+              value: "friend-matching-service:5005"
             - name: RMQ_URL
               value: "amqp://rabbitmq:5672"
             - name: ACTIVITY_PROTO_PATH
@@ -67,7 +67,7 @@ kind: Service
 metadata:
   name: activity-service
 spec:
-  type: LoadBalancer # Use ClusterIP for internal access only or NodePort for limited external access
+  type: ClusterIP # Use ClusterIP for internal access only or NodePort for limited external access
   ports:
     - protocol: TCP
       port: 5003
