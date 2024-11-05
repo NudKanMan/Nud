@@ -1,12 +1,17 @@
+// /src/app/layout.tsx
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ModalProvider } from "./contexts/ModalContext"; // Import ModalProvider
+import Modal from "./components/CreateActivityModal"; // Import Modal component
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -28,7 +33,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ModalProvider> {/* Wrap the application in ModalProvider */}
+          {children}
+          <Modal /> {/* Render the Modal component */}
+        </ModalProvider>
       </body>
     </html>
   );

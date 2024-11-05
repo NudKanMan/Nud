@@ -9,11 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        // Adding custom Tinder colors
+        'tinder-pink': '#fe3c72',
+        'tinder-grey': '#424242',
+        'tinder-white': '#ffffff',
+        'tinder-orange': '#fd5564',
       },
     },
   },
   plugins: [],
 };
+
 export default config;

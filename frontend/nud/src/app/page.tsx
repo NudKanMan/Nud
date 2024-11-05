@@ -1,5 +1,5 @@
+import { redirect, RedirectType } from 'next/navigation';
+
 export default function Home() {
-  return (
-    <div>hello</div>
-  );
+  return redirect("/home", RedirectType.push);
 }
