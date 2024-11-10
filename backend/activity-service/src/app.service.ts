@@ -66,17 +66,18 @@ export class AppService {
     const allParticipants = await this.activityParticipantsRepository.find({
       where: { activityId: id },
     });
-
     const participants = [];
-    // TODO .map is not a function undefined
-    friend.friends.map((friend) => {
-      console.log('friend', friend);
-      if (
-        allParticipants.find((participant) => participant.userId === friend.id)
-      ) {
-        participants.push(friend);
-      }
-    });
+    if (friend?.friends)
+      friend.friends.map((friend) => {
+        console.log('friend', friend);
+        if (
+          allParticipants.find(
+            (participant) => participant.userId === friend.id,
+          )
+        ) {
+          participants.push(friend);
+        }
+      });
 
     return {
       activity: activity,
