@@ -1,5 +1,6 @@
 // src/components/Activity/ActivityList.tsx
 import React, { useState } from "react";
+import ActivityReviews from "./ActivityReviews";
 
 interface Review {
   id: string;
