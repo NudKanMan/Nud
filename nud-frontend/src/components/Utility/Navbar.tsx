@@ -36,7 +36,9 @@ const Navbar: React.FC = () => {
             Reviews
           </button>
         </Link>
+
         {user ? (
+          // Show Logout button if user is logged in
           <button
             onClick={handleLogout}
             className="px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
@@ -44,11 +46,19 @@ const Navbar: React.FC = () => {
             Logout
           </button>
         ) : (
-          <Link href="/login" passHref>
-            <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
-              Login
-            </button>
-          </Link>
+          // Show Login and Register buttons if user is not logged in
+          <>
+            <Link href="/login" passHref>
+              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+                Login
+              </button>
+            </Link>
+            <Link href="/register" passHref>
+              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+                Register
+              </button>
+            </Link>
+          </>
         )}
       </div>
     </nav>
