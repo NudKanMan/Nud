@@ -1,0 +1,30 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #262626; /* Light background */
+}
+
+/* Custom color utilities */
+.text-primary {
+  color: #ffffff; /* Navy primary color */
+}
+
+.bg-primary {
+  background-color: #000000; /* Navy primary background */
+}
+
+.bg-accent {
+  background-color: hsl(303, 100%, 83%); /* Yellow accent background */
+}
+
+.text-neutral {
+  color: #ffffff; /* Dark gray for secondary text */
+}
+
+.bg-neutral-light {
+  background-color: #878787; /* White background */
+}
