@@ -14,20 +14,32 @@ const HomePage: React.FC = () => {
       <div className="flex justify-center space-x-8">
         <Link href="/activities" passHref>
           <div className="p-6 bg-primary text-accent rounded-lg shadow-lg cursor-pointer hover:bg-gray-800 transition">
-            <h2 className="text-2xl font-semibold mb-2">Activities</h2>
-            <p className="text-neutral">View and join upcoming activities.</p>
+            <h2 className="text-2xl font-semibold mb-2  text-pink-400">
+              Activities
+            </h2>
+            <p className="text-neutral text-white">
+              View and join upcoming activities.
+            </p>
           </div>
         </Link>
         <Link href="/friends" passHref>
           <div className="p-6 bg-primary text-accent rounded-lg shadow-lg cursor-pointer hover:bg-gray-800 transition">
-            <h2 className="text-2xl font-semibold mb-2">Friends</h2>
-            <p className="text-neutral">Manage your friend list and connect.</p>
+            <h2 className="text-2xl font-semibold mb-2  text-pink-400">
+              Friends
+            </h2>
+            <p className="text-neutral text-white">
+              Manage your friend list and connect.
+            </p>
           </div>
         </Link>
         <Link href="/reviews" passHref>
           <div className="p-6 bg-primary text-accent rounded-lg shadow-lg cursor-pointer hover:bg-gray-800 transition">
-            <h2 className="text-2xl font-semibold mb-2">Reviews</h2>
-            <p className="text-neutral">Read and add reviews for activities.</p>
+            <h2 className="text-2xl font-semibold mb-2 text-pink-400">
+              Reviews
+            </h2>
+            <p className="text-neutral text-white">
+              Read and add reviews for activities.
+            </p>
           </div>
         </Link>
       </div>
