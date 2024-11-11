@@ -1,4 +1,4 @@
-// Home.tsx
+// /src/app/home/page.tsx
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect, RedirectType } from "next/navigation";
@@ -7,10 +7,11 @@ import ActivityCardCreater from "../components/ActivityCardCreater";
 import ActivityCard from "../components/ActivityCard";
 
 export default async function Home() {
+
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return redirect("/signin", RedirectType.push);
+    return redirect("/signin", RedirectType.replace);
   }
 
   return (
@@ -20,13 +21,13 @@ export default async function Home() {
         <div className="grid grid-cols-4 grid-rows-2 gap-4 p-6 w-full max-w-7xl">
           <ActivityCardCreater />
           {/* Placeholder cards */}
-          <ActivityCard />
-          <ActivityCard />
-          <ActivityCard />
-          <ActivityCard />
-          <ActivityCard />
-          <ActivityCard />
-          <ActivityCard />
+          <ActivityCard id="01" />
+          <ActivityCard id="01" />
+          <ActivityCard id="01" />
+          <ActivityCard id="01" />
+          <ActivityCard id="01" />
+          <ActivityCard id="01" />
+          <ActivityCard id="01" />
         </div>
       </div>
     </div>

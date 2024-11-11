@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET, // Ensure the secret is used here
+  secret: process.env.NEXTAUTH_SECRET, 
 };
 
 const handler = NextAuth(authOptions);

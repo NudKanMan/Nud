@@ -7,21 +7,22 @@ import { Button, TextField, InputAdornment } from "@mui/material";
 import SearchRounded from "@mui/icons-material/SearchRounded";
 import IconButton from "@mui/material/IconButton";
 import { useModal } from "../contexts/ModalContext";
-import ProfileModal from "./ProfileModal"; // Import ProfileModal
+import ProfileModal from "./modals/ProfileModal"; // Updated import path
+import MenuModal from "./modals/MenuModal"; // Updated import path
 
 interface NavBarProps {
   session: Session | null;
 }
 
 export default function NavBar({ session }: NavBarProps) {
-  const { openModal } = useModal(); // Access openModal function
+  const { openModal } = useModal();
 
-  const handleHome = () => {
-    window.location.href = "/home";
+  const handleMenuClick = () => {
+    openModal("menu");
   };
 
   const handleProfileClick = () => {
-    openModal(); // Open the ProfileModal
+    openModal("profile");
   };
 
   return (
@@ -43,7 +44,7 @@ export default function NavBar({ session }: NavBarProps) {
           sx={{
             backgroundColor: "#FF5864",
             fontWeight: "bold",
-            padding: "8px 40px",
+            padding: "8px 70px",
             fontSize: "1.2rem",
             borderRadius: "50px",
             color: "white",
@@ -52,9 +53,9 @@ export default function NavBar({ session }: NavBarProps) {
               color: "#FF5864",
             },
           }}
-          onClick={handleHome}
+          onClick={handleMenuClick} // Open MenuModal on click
         >
-          Home
+          Menu
         </Button>
       </div>
 
@@ -66,7 +67,7 @@ export default function NavBar({ session }: NavBarProps) {
             padding: "8px 20px",
             backgroundColor: "#D9D9D9",
             borderRadius: "50px",
-            width: "850px",
+            width: "800px",
           }}
           InputProps={{
             endAdornment: (
@@ -101,6 +102,7 @@ export default function NavBar({ session }: NavBarProps) {
       </div>
 
       <ProfileModal session={session} /> {/* Render the ProfileModal */}
+      <MenuModal /> {/* Render the MenuModal */}
     </div>
   );
 }

@@ -6,19 +6,29 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
 
-  const url = app.get(ConfigService).get('ACTIVITY_SERVICE_URL');
-  const protoPath = app.get(ConfigService).get('ACTIVITY_PROTO_PATH');
+  // gRPC Microservice Configuration
+  const grpcUrl = configService.get('ACTIVITY_SERVICE_URL');
+  const protoPath = configService.get('ACTIVITY_PROTO_PATH');
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'activities',
       protoPath: join(__dirname, protoPath),
-      url,
+      url: grpcUrl,
     },
   });
 
+  // Enable CORS for frontend access
+  app.enableCors({
+    origin: 'http://localhost:3000', 
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
+
+  // Start the gRPC and HTTP services
   await app.startAllMicroservices();
-  await app.init();
+  await app.listen(5003);
 }
 bootstrap();

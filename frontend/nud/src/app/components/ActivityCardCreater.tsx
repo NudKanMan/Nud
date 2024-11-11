@@ -10,7 +10,7 @@ export default function ActivityCardCreater() {
 
   const handleCreate = (): void => {
     console.log("hello");
-    openModal();
+    openModal("createActivity"); // Open the CreateActivityModal
   };
 
   return (

@@ -1,19 +1,19 @@
-// /src/app/signin/page.tsx
+// /src/app/signup/page.tsx
 
 'use client';
 
 import React, { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { Button } from "@mui/material";
 import { useRouter } from 'next/navigation';
 
-export default function SignIn() {
+export default function SignUp() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!email.endsWith('@student.chula.ac.th')) {
@@ -23,19 +23,17 @@ export default function SignIn() {
 
     setError('');
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      callbackUrl: '/',
-    });
+    const isSignUpSuccessful = true;
 
-    if (result?.error) {
-      setError(result.error);
+    if (isSignUpSuccessful) {
+      router.replace("/signin");
+    } else {
+      setError("Sign-up failed. Please try again.");
     }
   };
 
-  const handleRedirectToSignup = () => {
-    router.replace("/signup");
+  const handleRedirectToSignIn = () => {
+    router.replace("/signin");
   };
 
   return (
@@ -44,8 +42,23 @@ export default function SignIn() {
         <h2 className="text-3xl font-bold text-center text-tinder-grey">
           Welcome to <span className="text-tinder-orange">Nud</span>
         </h2>
-        <p className="text-center text-tinder-grey text-2xl font-bold">Please Sign in</p>
-        <form className="space-y-6" onSubmit={handleLogin}>
+        <p className="text-center text-tinder-grey text-2xl font-bold">Register new account</p>
+        <form className="space-y-6" onSubmit={handleSignUp}>
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-tinder-grey">
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-tinder-pink focus:border-tinder-pink sm:text-sm text-tinder-grey"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-tinder-grey">
               Email
@@ -97,17 +110,17 @@ export default function SignIn() {
             }}
             fullWidth
           >
-            Sign In
+            Sign Up
           </Button>
         </form>
 
         <p className="text-center text-tinder-grey mt-4">
-          Don’t have an account?{" "}
+          Already have an account?{" "}
           <span
-            onClick={handleRedirectToSignup}
+            onClick={handleRedirectToSignIn}
             className="text-[#fd5564] underline font-bold cursor-pointer"
           >
-            Register here
+            Sign in here
           </span>
         </p>
       </div>
