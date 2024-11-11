@@ -1,6 +1,7 @@
 // src/components/Friends/FriendsList.tsx
 import React, { useState } from "react";
 import FriendCard from "./FriendCard";
+import AddFriendForm from "./AddFriendForm";
 
 interface Friend {
   id: string;
@@ -25,6 +26,15 @@ const FriendsList: React.FC = () => {
     alert(`Message to friend with ID: ${id}`);
   };
 
+  const handleAddFriend = (name: string, email: string) => {
+    const newFriend: Friend = {
+      id: (friends.length + 1).toString(),
+      name,
+      email,
+    };
+    setFriends([...friends, newFriend]);
+  };
+
   return (
     <div className="p-6 bg-neutral-light rounded-lg shadow-md">
       <h2 className="text-2xl text-primary font-semibold mb-4">My Friends</h2>
@@ -38,6 +48,7 @@ const FriendsList: React.FC = () => {
           />
         ))}
       </div>
+      <AddFriendForm onAddFriend={handleAddFriend} />
     </div>
   );
 };
