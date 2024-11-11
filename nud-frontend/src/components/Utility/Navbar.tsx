@@ -20,39 +20,35 @@ const Navbar: React.FC = () => {
           Nud Platform
         </h1>
       </Link>
-      <div className="space-x-4">
+      <div className="space-x-4 flex">
+        <Link href="/activities" passHref>
+          <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+            Activities
+          </button>
+        </Link>
+        <Link href="/friends" passHref>
+          <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+            Friends
+          </button>
+        </Link>
+        <Link href="/reviews" passHref>
+          <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+            Reviews
+          </button>
+        </Link>
         {user ? (
-          <>
-            <Link href="/profile" passHref>
-              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition-colors duration-200">
-                Profile
-              </button>
-            </Link>
-            <Link href="/profile/edit" passHref>
-              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition-colors duration-200">
-                Edit Profile
-              </button>
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition-colors duration-200"
-            >
-              Logout
-            </button>
-          </>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
         ) : (
-          <>
-            <Link href="/login" passHref>
-              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition-colors duration-200">
-                Login
-              </button>
-            </Link>
-            <Link href="/register" passHref>
-              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition-colors duration-200">
-                Register
-              </button>
-            </Link>
-          </>
+          <Link href="/login" passHref>
+            <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+              Login
+            </button>
+          </Link>
         )}
       </div>
     </nav>
