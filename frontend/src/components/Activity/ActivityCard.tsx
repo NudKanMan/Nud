@@ -15,29 +15,31 @@ const ActivityCard: React.FC<ActivityProps> = ({
   maxParticipants,
   startDate,
   endDate,
+  id,
 }) => {
-  const getUser = async () => {
+  const handleJoin = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8765/users/getmyprofile"
+      console.log(id);
+      const response = await axios.put(
+        "http://localhost:8765/activities/join",
+        id
       );
-      console.log(response.data.id);
+      alert("Joining activity successful!");
+      console.log(response.data);
+      // console.log(response.data.id);
     } catch (error) {
+      alert("Error joining activity");
       console.log(error);
     }
   };
 
-  const handleJoin = () => {
-    alert(`You have successfully joined the activity: ${title}!`);
-  };
-
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
+      {/* <CardMedia
         sx={{ height: 140 }}
         image="/static/images/cards/contemplative-reptile.jpg"
         title={title}
-      />
+      /> */}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}

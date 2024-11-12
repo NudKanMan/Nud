@@ -4,6 +4,7 @@ export interface ActivityProps {
   maxParticipants: number;
   startDate: string;
   endDate: string;
+  id: string;
 }
 
 export interface UserProfile {

@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setToken(token);
       localStorage.setItem("token", token); // Save token to localStorage
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      router.push("/profile"); // Redirect to profile after login
+      router.push("/"); // Redirect to profile after login
       return null;
     } catch (error) {
       console.error(error);

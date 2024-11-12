@@ -2,15 +2,27 @@ import React, { useEffect } from "react";
 import ActivityList from "../../components/Activity/ActivityList";
 import { Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { useAuth } from "@/context/AuthContext";
 
 const ActivitiesPage: React.FC = () => {
   const router = useRouter();
+  const { token } = useAuth();
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/login"); // Redirect to login if not authenticated
+    }
+  }, [token, router]);
+
+  if (!token) {
+    return null; // Optionally, render null or a loading spinner while redirecting
+  }
 
   return (
-    <div className="">
+    <div>
       <div className="flex flex-row justify-between">
         <Typography variant="h2">All Activities</Typography>
-        <div className="">
+        <div>
           <Button
             onClick={() => router.push("/activities/create")}
             variant="contained"
@@ -20,11 +32,6 @@ const ActivitiesPage: React.FC = () => {
           </Button>
         </div>
       </div>
-
-      {/* <ReviewCard
-        rating={5}
-        comment="Very good! I enjoyed the activity so much"
-      /> */}
       <ActivityList />
     </div>
   );
