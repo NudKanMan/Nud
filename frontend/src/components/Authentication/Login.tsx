@@ -24,7 +24,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="">
+    <div className="p-">
       <div className="py-10">
         <Typography variant="h6">Welcome to Nud✓</Typography>
         <Typography variant="caption" gutterBottom sx={{ display: "block" }}>

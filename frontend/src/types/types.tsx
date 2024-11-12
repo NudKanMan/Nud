@@ -20,3 +20,7 @@ export interface ReviewProps {
 export interface LoginProps {
   onLogin: (email: string, password: string) => void;
 }
+
+export interface RegisterProps {
+  onRegister: (data: { email: string; password: string; name: string }) => void;
+}

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "../context/AuthContext";
 import Login from "@/components/Authentication/Login";
 import Typography from "@mui/material/Typography";
 
 const LoginPage = () => {
   const { login } = useAuth();
-  const [error, setError] = useState("");
 
   const handleLogin = async (email: string, password: string) => {
     login(email, password);
