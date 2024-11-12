@@ -10,13 +10,11 @@ interface EditProfileProps {
   onSaveProfile: (data: User) => void;
 }
 
-const EditProfile: React.FC<EditProfileProps> = ({ user, onSaveProfile }) => {
-  const [formData, setFormData] = useState({
-    name: user.name || "",
-  });
+const EditProfile: React.FC<EditProfileProps> = ({ onSaveProfile }) => {
+  const [formData, setFormData] = useState({});
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -36,13 +34,6 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, onSaveProfile }) => {
           placeholder="Name"
           className="w-full p-3 border border-gray-500 bg-primary text-primary rounded focus:outline-none focus:ring focus:ring-accent"
           value={formData.name}
-          onChange={handleChange}
-        />
-        <textarea
-          name="bio"
-          placeholder="Bio"
-          className="w-full p-3 border border-gray-500 bg-primary text-primary rounded focus:outline-none focus:ring focus:ring-accent"
-          value={formData.bio}
           onChange={handleChange}
         />
         <button
