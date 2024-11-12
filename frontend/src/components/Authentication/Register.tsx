@@ -7,11 +7,11 @@ const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: ""
+    name: "",
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

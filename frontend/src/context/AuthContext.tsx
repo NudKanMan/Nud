@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -18,7 +24,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // AuthProvider component
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [token, setToken] = useState<string | null>(
     typeof window !== "undefined" ? localStorage.getItem("token") : null
   );
@@ -27,22 +35,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Login function
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:8765/users/login", { email, password });
+      const response = await axios.post("http://localhost:8765/users/login", {
+        email,
+        password,
+      });
       const token = response.data.token;
       setToken(token);
       localStorage.setItem("token", token); // Save token to localStorage
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       router.push("/profile"); // Redirect to profile after login
+      return null;
     } catch (error) {
-      console.error("Login failed:", error);
-      alert("Login failed. Please check your credentials.");
+      console.error(error);
+      alert("Login failed. Please try again.");
     }
   };
 
   // Register function
-  const register = async (data: { email: string; password: string; name: string }) => {
+  const register = async (data: {
+    email: string;
+    password: string;
+    name: string;
+  }) => {
     try {
-      const response = await axios.post("http://localhost:8765/users/register", data);
+      const response = await axios.post(
+        "http://localhost:8765/users/register",
+        data
+      );
       const token = response.data.token;
       setToken(token);
       localStorage.setItem("token", token); // Save token to localStorage

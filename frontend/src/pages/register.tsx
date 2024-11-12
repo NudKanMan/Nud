@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import Register from "../components/Authentication/Register";
 
 const RegisterPage = () => {
-  const { register, error } = useAuth();
+  const { register } = useAuth();
 
   const handleRegister = async (data: {
     email: string;
@@ -16,8 +16,7 @@ const RegisterPage = () => {
 
   return (
     <div>
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      <Register/>
+      <Register />
     </div>
   );
 };

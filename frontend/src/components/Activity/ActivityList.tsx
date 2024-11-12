@@ -45,8 +45,8 @@ const ActivityList: React.FC = () => {
       prevActivities.map((activity) =>
         activity.id === activityId
           ? { ...activity, participants: [...activity.participants, userId] }
-          : activity
-      )
+          : activity,
+      ),
     );
   };
 
@@ -55,8 +55,8 @@ const ActivityList: React.FC = () => {
       prevActivities.map((activity) =>
         activity.id === activityId
           ? { ...activity, reviews: [...activity.reviews, review] }
-          : activity
-      )
+          : activity,
+      ),
     );
   };
 

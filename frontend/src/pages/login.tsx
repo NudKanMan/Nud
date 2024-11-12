@@ -7,16 +7,11 @@ const LoginPage = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (email: string, password: string) => {
-    try {
-      await login(email, password);
-    } catch (err) {
-      setError("Invalid credentials");
-    }
+    login(email, password);
   };
 
   return (
     <>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       <Login onLogin={handleLogin} />
     </>
   );

@@ -1,7 +1,7 @@
 // src/components/Utility/Layout.tsx
 import React from "react";
-const Navbar = dynamic(() => import('./Navbar'), { ssr: false })
-import Footer from "./Footer"; // Make sure Footer is exported correctly
+const Navbar = dynamic(() => import("./Navbar"), { ssr: false });
+import Footer from "./Footer";
 import dynamic from "next/dynamic";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

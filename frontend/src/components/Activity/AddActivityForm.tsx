@@ -6,7 +6,7 @@ interface AddActivityFormProps {
     name: string,
     description: string,
     date: string,
-    location: string
+    location: string,
   ) => void;
 }
 

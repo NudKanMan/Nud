@@ -1,38 +1,62 @@
-// src/components/Authentication/Login.tsx
+import Button, { ButtonProps } from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { LoginProps } from "@/types/types";
+import { red } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
 
-const Login: React.FC = () => {
-  const { login } = useAuth();
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: theme.palette.getContrastText(red["A200"]),
+  backgroundColor: red["A200"],
+  "&:hover": {
+    backgroundColor: red[400],
+  },
+}));
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password); // Login using the API
+    onLogin(email, password);
   };
 
   return (
-    <div className="flex flex-col items-center py-8 px-6 bg-neutral-light rounded-lg shadow-lg max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-accent">Login</h2>
-      <form onSubmit={handleSubmit} className="w-full space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 border border-gray-500 bg-primary text-primary rounded focus:outline-none focus:ring focus:ring-accent"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
+    <div className="p-">
+      <div className="py-10">
+        <Typography variant="h6">Welcome to Nud</Typography>
+        <Typography variant="caption" gutterBottom sx={{ display: "block" }}>
+          Start matching your activities for free
+        </Typography>
+      </div>
+
+      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-y-4">
+        <TextField onChange={(e) => setEmail(e.target.value)} label="Email" />
+        <TextField
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 border border-gray-500 bg-primary text-primary rounded focus:outline-none focus:ring focus:ring-accent"
+          label="password"
+          type="password"
         />
-        <button type="submit" className="button button-primary w-full">
+        <ColorButton type="submit" variant="contained">
           Login
-        </button>
+        </ColorButton>
+        <div className="flex flex-row gap-x-1">
+          <Typography variant="caption" gutterBottom sx={{ display: "block" }}>
+            Don't have an account?
+          </Typography>
+          <a href="/register">
+            <Typography
+              variant="caption"
+              gutterBottom
+              sx={{ display: "block" }}
+              color={"#ff5252"}
+            >
+              Sign Up!
+            </Typography>
+          </a>
+        </div>
       </form>
     </div>
   );
