@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 
 const Navbar: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { token, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -14,8 +14,8 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-primary p-4 shadow-lg text-primary flex justify-between items-center">
-      <Link href="/" passHref>
+    <div className="bg-primary p-4 shadow-lg text-primary flex justify-between items-center">
+       <Link href="/" passHref>
         <h1 className="text-lg font-semibold cursor-pointer hover:text-accent transition-colors duration-200">
           Nud Platform
         </h1>
@@ -37,22 +37,21 @@ const Navbar: React.FC = () => {
           </button>
         </Link>
 
-        {user ? (
-          // Show Logout button if user is logged in
+        {token !== null ? (
+          <>
           <button
             onClick={handleLogout}
             className="px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
           >
             Logout
           </button>
+          </>
         ) : (
           // Show Login and Register buttons if user is not logged in
           <>
-            <Link href="/login" passHref>
-              <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
+              <div className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition" >
                 Login
-              </button>
-            </Link>
+              </div>
             <Link href="/register" passHref>
               <button className="px-4 py-2 rounded bg-accent text-primary font-semibold hover:bg-pink-400 transition">
                 Register
@@ -61,7 +60,8 @@ const Navbar: React.FC = () => {
           </>
         )}
       </div>
-    </nav>
+
+    </div>
   );
 };
 

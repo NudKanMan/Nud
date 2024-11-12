@@ -10,7 +10,6 @@ const RegisterPage = () => {
     email: string;
     password: string;
     name: string;
-    bio: string;
   }) => {
     await register(data);
   };
@@ -18,7 +17,7 @@ const RegisterPage = () => {
   return (
     <div>
       {error && <p className="text-red-500 text-center">{error}</p>}
-      <Register onRegister={handleRegister} />
+      <Register/>
     </div>
   );
 };

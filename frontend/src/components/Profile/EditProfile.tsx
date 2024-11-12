@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 interface User {
   name: string;
-  bio: string;
 }
 
 interface EditProfileProps {
@@ -14,7 +13,6 @@ interface EditProfileProps {
 const EditProfile: React.FC<EditProfileProps> = ({ user, onSaveProfile }) => {
   const [formData, setFormData] = useState({
     name: user.name || "",
-    bio: user.bio || "",
   });
 
   const handleChange = (

@@ -1,0 +1,209 @@
+services:
+  api-gateway:
+    image: m4xkub/api-gateway:latest
+    container_name: api_gateway
+    ports:
+      - "8765:5000"
+    environment:
+      - API_GATEWAY_PORT=5000
+      - USER_SERVICE_URL=user-service:5002
+      - ACTIVITY_SERVICE_URL=activity-service:5003
+      - REVIEW_SERVICE_URL=review-service:5004
+      - FRIEND_MATCHING_SERVICE_URL=friend-matching-service:5005
+      - JWT_SECRET=secret
+      - USER_PROTO_PATH=../../proto/user.proto
+      - REVIEW_PROTO_PATH=../../proto/review.proto
+      - FRIEND_MATCHING_PROTO_PATH=../../proto/friendmatching.proto
+      - ACTIVITY_PROTO_PATH=../../proto/activity.proto
+      - RMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+#-------------------------------------------------
+  user-service:
+    image: m4xkub/user-service:latest
+    container_name: user-service
+    ports:
+      - "5002:5002"
+    environment:
+      - JWT_SECRET=secret
+      - USER_SERVICE_URL=0.0.0.0:5002
+      - DATABASE_HOST=mysql-user-service
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+      - DATABASE_PORT=3306
+      - MYSQL_DATABASE=nud-user-service
+      - USER_PROTO_PATH=../proto/user.proto
+      - RMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      mysql-user-service:
+        condition: service_healthy
+    networks:
+      - app-network
+  
+  mysql-user-service:
+    image: mysql:8.0
+    container_name: mysql-user-service
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nud-user-service
+      - DATABASE_PORT=3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - app-network
+#-------------------------------------------------
+  review-service:
+    image: m4xkub/review-service:latest
+    container_name: review-service
+    ports:
+      - "5004:5004"
+    environment:
+      - REVIEW_SERVICE_URL=0.0.0.0:5004
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=nud-review-service
+      - MONGO_URL=mongodb://mongo-review-service:27017
+      - ACTIVITY_SERVICE_URL=activity-service:5003
+      - RMQ_URL=amqp://rabbitmq:5672
+      - REVIEW_PROTO_PATH=./proto/review.proto
+      - ACTIVITY_PROTO_PATH=./proto/activity.proto
+    depends_on:
+      mongo-review-service:
+        condition: service_healthy
+    networks:
+      - app-network
+    
+  
+  mongo-review-service:
+    container_name: mongo-review-service
+    environment:  # Corrected the property name
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=nud-review-service
+    image: mongo:8.0
+    restart: always
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+    networks:
+      - app-network
+#------------------------------------------------------------
+  friend-matching-service:
+    container_name: friend-matching-service
+    environment:
+      - FRIEND_MATCHING_SERVICE_URL=0.0.0.0:5005
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+      - DATABASE_PORT=3308
+      - MYSQL_TCP_PORT=3308
+      - MYSQL_DATABASE=nud-friend-matching-service
+      - DATABASE_HOST=mysql-friend-matching-service
+      - RMQ_URL=amqp://rabbitmq:5672
+      - FRIEND_MATCHING_PROTO_PATH=../proto/friendmatching.proto
+    image: m4xkub/friend-matching-service:latest
+    ports:
+      - "5005:5005"
+    depends_on:
+      mysql-friend-matching-service:
+        condition: service_healthy
+    networks:
+      - app-network
+
+
+  mysql-friend-matching-service:
+    image: mysql:8.0
+    container_name: mysql-friend-matching-service
+    environment:
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+      - DATABASE_PORT=3308
+      - MYSQL_TCP_PORT=3308
+      - MYSQL_DATABASE=nud-friend-matching-service
+    ports:
+      - "3308:3308"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - app-network
+    
+#------------------------------------------------------------
+  activity-service:
+    container_name: activity-service
+    image: m4xkub/activity-service:latest
+    ports:
+      - "5003:5003"
+    environment:
+      - ACTIVITY_SERVICE_URL=0.0.0.0:5003
+      - DATABASE_HOST=mysql-activity-service
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nud-activity-service
+      - MYSQL_TCP_PORT=3307
+      - DATABASE_PORT=3307
+      - FRIEND_MATCHING_SERVICE_URL=friend-matching-service:5005
+      - RMQ_URL=amqp://rabbitmq:5672
+      - ACTIVITY_PROTO_PATH=./proto/activity.proto
+      - FRIEND_MATCHING_PROTO_PATH=./proto/friendmatching.proto
+    depends_on:
+      mysql-activity-service:
+        condition: service_healthy
+    networks:
+      - app-network
+  mysql-activity-service:
+    image: mysql:8.0
+    container_name: mysql-activity-service
+    environment:
+      - MYSQL_ROOT_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nud-activity-service
+      - MYSQL_TCP_PORT=3307
+      - DATABASE_PORT=3307
+    ports:
+      - "3307:3307"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - app-network
+#------------------------------------------------------------
+#------------------------------------------------------------
+
+
+
+
+networks:
+  app-network:
+    driver: bridge

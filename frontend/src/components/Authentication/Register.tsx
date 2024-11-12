@@ -7,8 +7,7 @@ const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: "",
-    bio: "",
+    name: ""
   });
 
   const handleChange = (
@@ -51,13 +50,6 @@ const Register: React.FC = () => {
           onChange={handleChange}
           className="w-full p-3 border border-gray-500 bg-primary text-primary rounded focus:outline-none focus:ring focus:ring-accent"
         />
-        <textarea
-          name="bio"
-          placeholder="Bio"
-          value={formData.bio}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-500 bg-primary text-primary rounded focus:outline-none focus:ring focus:ring-accent"
-        ></textarea>
         <button type="submit" className="button button-primary w-full">
           Register
         </button>
