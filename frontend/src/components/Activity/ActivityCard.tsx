@@ -2,7 +2,6 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
@@ -22,11 +21,12 @@ const ActivityCard: React.FC<ActivityProps> = ({
       console.log(id);
       const response = await axios.put(
         "http://localhost:8765/activities/join",
-        id
+        {
+          id,
+        }
       );
       alert("Joining activity successful!");
       console.log(response.data);
-      // console.log(response.data.id);
     } catch (error) {
       alert("Error joining activity");
       console.log(error);
@@ -35,11 +35,6 @@ const ActivityCard: React.FC<ActivityProps> = ({
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      {/* <CardMedia
-        sx={{ height: 140 }}
-        image="/static/images/cards/contemplative-reptile.jpg"
-        title={title}
-      /> */}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}

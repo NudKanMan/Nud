@@ -14,10 +14,6 @@ const ActivitiesPage: React.FC = () => {
     }
   }, [token, router]);
 
-  if (!token) {
-    return null; // Optionally, render null or a loading spinner while redirecting
-  }
-
   return (
     <div>
       <div className="flex flex-row justify-between">

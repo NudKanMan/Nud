@@ -18,8 +18,7 @@ const ActivityList: React.FC = () => {
   }, []);
 
   const [activities, setActivities] = useState<ActivityProps[]>();
-  // console.log(activities?.activities);
-  // console.log(activities?.length);
+
   return (
     <div className="p-6 bg-neutral-light rounded-lg shadow-md">
       <h2 className="text-2xl text-primary font-semibold mb-4">Activities</h2>
